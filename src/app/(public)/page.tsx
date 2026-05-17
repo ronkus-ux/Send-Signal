@@ -9,14 +9,14 @@ export default function LandingPage() {
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[500px] opacity-20 pointer-events-none" style={{ background: 'radial-gradient(circle, var(--sys-color-roles-1-primary-roles-primary-color-role) 0%, transparent 70%)', filter: 'blur(60px)' }} />
         
         <div className="mx-auto max-w-7xl px-6 lg:px-8 relative z-10 text-center">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-primary-95 text-brand-primary-30 text-sm font-medium mb-8 border border-brand-primary-90">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-lg bg-brand-primary-95 text-brand-primary-30 text-sm font-medium mb-8 border border-brand-primary-90">
             <span className="flex h-2 w-2 rounded-full bg-brand-primary animate-pulse"></span>
             WhatsApp Business API Ready
           </div>
           
-          <h1 className="text-[var(--sys-typography-display-display-small-font-size)] sm:text-[var(--sys-typography-display-display-medium-font-size)] lg:text-[var(--sys-typography-display-display-large-font-size)] font-[var(--sys-typography-display-display-large-font-weight)] tracking-[var(--sys-typography-display-display-large-letter-spacing)] leading-[1.1] text-brand-neutral-10 max-w-4xl mx-auto mb-8">
+          <h1 className="text-[var(--sys-typography-display-display-large-font-size)] font-[var(--sys-typography-display-display-large-font-weight)] tracking-[var(--sys-typography-display-display-large-letter-spacing)] leading-[1.1] text-brand-neutral-10 max-w-4xl mx-auto mb-8">
             Automate personalized <br className="hidden sm:block" />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-primary to-brand-success-40">WhatsApp outreach</span>
+            <span className="text-brand-primary">WhatsApp outreach</span>
           </h1>
           
           <p className="text-[var(--sys-typography-body-body-large-font-size)] lg:text-[var(--sys-typography-title-title-large-font-size)] text-brand-neutral-40 max-w-2xl mx-auto mb-10 leading-relaxed">
@@ -26,13 +26,13 @@ export default function LandingPage() {
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <Link
               href="/register"
-              className="flex items-center justify-center gap-2 w-full sm:w-auto rounded-full bg-brand-primary px-8 py-4 text-base font-semibold text-white shadow-lg shadow-brand-primary-80 hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
+              className="flex items-center justify-center gap-2 w-full sm:w-auto rounded-lg bg-brand-primary px-8 py-4 text-base font-semibold text-white shadow-lg shadow-brand-primary-80 hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
             >
               Start for free <ArrowRight size={20} />
             </Link>
             <Link
               href="#features"
-              className="flex items-center justify-center gap-2 w-full sm:w-auto rounded-full bg-white px-8 py-4 text-base font-semibold text-brand-neutral-20 shadow-sm border border-brand-neutral-90 hover:bg-brand-neutral-98 transition-colors duration-300"
+              className="flex items-center justify-center gap-2 w-full sm:w-auto rounded-lg bg-white px-8 py-4 text-base font-semibold text-brand-neutral-20 shadow-sm border border-brand-neutral-90 hover:bg-brand-neutral-98 transition-colors duration-300"
             >
               View features
             </Link>
@@ -40,37 +40,71 @@ export default function LandingPage() {
           
           {/* Dashboard Preview mockup */}
           <div className="mt-20 mx-auto max-w-5xl rounded-2xl border border-brand-neutral-90 bg-white/50 backdrop-blur-xl shadow-2xl p-2 sm:p-4 overflow-hidden transform hover:scale-[1.01] transition-transform duration-500">
-            <div className="rounded-xl overflow-hidden border border-brand-neutral-95 bg-brand-neutral-99 h-[400px] flex items-center justify-center relative">
-               <div className="absolute top-0 left-0 w-full h-12 bg-white border-b border-brand-neutral-90 flex items-center px-4 gap-2">
-                 <div className="flex gap-1.5">
-                   <div className="w-3 h-3 rounded-full bg-brand-error-50" />
-                   <div className="w-3 h-3 rounded-full bg-brand-warning-50" />
-                   <div className="w-3 h-3 rounded-full bg-brand-success-50" />
+            <div className="rounded-xl overflow-hidden border border-brand-neutral-90 bg-white h-[450px] flex text-left relative shadow-inner">
+               
+               {/* Sidebar */}
+               <div className="w-48 border-r border-brand-neutral-90 bg-brand-neutral-99 flex flex-col p-4 shrink-0 hidden sm:flex">
+                 <div className="font-bold text-brand-neutral-10 mb-8 flex items-center gap-2">
+                   <div className="w-6 h-6 rounded bg-brand-primary flex items-center justify-center text-white text-xs"><MessageSquare size={14} /></div>
+                   Signal
+                 </div>
+                 <div className="space-y-2">
+                   <div className="px-3 py-2 text-sm text-brand-neutral-40 font-medium rounded-lg hover:bg-brand-neutral-95 cursor-pointer flex items-center gap-2"><BarChart3 size={16}/> Dashboard</div>
+                   <div className="px-3 py-2 text-sm text-brand-primary font-medium bg-brand-primary-95 rounded-lg flex items-center gap-2"><Users size={16}/> Leads</div>
+                   <div className="px-3 py-2 text-sm text-brand-neutral-40 font-medium rounded-lg hover:bg-brand-neutral-95 cursor-pointer flex items-center gap-2"><Upload size={16}/> Campaigns</div>
                  </div>
                </div>
-               <div className="grid grid-cols-3 gap-6 w-full px-8 mt-12">
-                 <div className="col-span-2 bg-white rounded-lg border border-brand-neutral-90 p-6 shadow-sm">
-                   <div className="h-4 w-1/3 bg-brand-neutral-90 rounded mb-8" />
-                   <div className="space-y-4">
-                     <div className="h-10 w-full bg-brand-primary-95 rounded" />
-                     <div className="h-10 w-full bg-brand-neutral-95 rounded" />
-                     <div className="h-10 w-full bg-brand-neutral-95 rounded" />
+
+               {/* Main Content */}
+               <div className="flex-1 flex flex-col bg-white">
+                 {/* Topbar */}
+                 <div className="h-14 border-b border-brand-neutral-90 flex items-center px-6 justify-between bg-white">
+                   <h3 className="font-semibold text-brand-neutral-10 text-lg">Leads Directory</h3>
+                   <div className="flex gap-2">
+                     <div className="px-3 py-1.5 text-xs font-medium border border-brand-neutral-90 rounded-lg text-brand-neutral-20">Filter</div>
+                     <div className="px-3 py-1.5 text-xs font-medium bg-brand-primary text-white rounded-lg flex items-center gap-1"><Upload size={14} /> Import</div>
                    </div>
                  </div>
-                 <div className="space-y-6">
-                   <div className="bg-white rounded-lg border border-brand-neutral-90 p-6 shadow-sm">
-                     <div className="h-12 w-12 rounded-full bg-brand-success-95 mb-4 flex items-center justify-center text-brand-success-40">
-                       <CheckCircle2 size={24} />
-                     </div>
-                     <div className="h-6 w-2/3 bg-brand-neutral-90 rounded mb-2" />
-                     <div className="h-8 w-1/2 bg-brand-neutral-80 rounded" />
-                   </div>
-                   <div className="bg-white rounded-lg border border-brand-neutral-90 p-6 shadow-sm">
-                     <div className="h-12 w-12 rounded-full bg-brand-primary-95 mb-4 flex items-center justify-center text-brand-primary-40">
-                       <MessageSquare size={24} />
-                     </div>
-                     <div className="h-6 w-2/3 bg-brand-neutral-90 rounded mb-2" />
-                     <div className="h-8 w-1/2 bg-brand-neutral-80 rounded" />
+                 
+                 {/* Table */}
+                 <div className="p-6">
+                   <div className="border border-brand-neutral-90 rounded-xl overflow-hidden">
+                     <table className="w-full text-sm text-left">
+                       <thead className="bg-brand-neutral-98 text-brand-neutral-40 font-medium border-b border-brand-neutral-90">
+                         <tr>
+                           <th className="px-4 py-3 font-medium">Name</th>
+                           <th className="px-4 py-3 font-medium">Phone Number</th>
+                           <th className="px-4 py-3 font-medium">Status</th>
+                           <th className="px-4 py-3 font-medium text-right">Added</th>
+                         </tr>
+                       </thead>
+                       <tbody className="divide-y divide-brand-neutral-90 text-brand-neutral-20">
+                         <tr className="hover:bg-brand-neutral-99">
+                           <td className="px-4 py-3 font-medium text-brand-neutral-10">Sarah Jenkins</td>
+                           <td className="px-4 py-3">+1 (555) 019-2834</td>
+                           <td className="px-4 py-3"><span className="px-2 py-1 bg-brand-success-95 text-brand-success-40 rounded-md text-xs font-medium">Replied</span></td>
+                           <td className="px-4 py-3 text-right text-brand-neutral-40">2h ago</td>
+                         </tr>
+                         <tr className="hover:bg-brand-neutral-99">
+                           <td className="px-4 py-3 font-medium text-brand-neutral-10">Michael Chen</td>
+                           <td className="px-4 py-3">+1 (555) 837-1928</td>
+                           <td className="px-4 py-3"><span className="px-2 py-1 bg-brand-primary-95 text-brand-primary-40 rounded-md text-xs font-medium">Sent</span></td>
+                           <td className="px-4 py-3 text-right text-brand-neutral-40">5h ago</td>
+                         </tr>
+                         <tr className="hover:bg-brand-neutral-99">
+                           <td className="px-4 py-3 font-medium text-brand-neutral-10">Elena Rodriguez</td>
+                           <td className="px-4 py-3">+1 (555) 432-8841</td>
+                           <td className="px-4 py-3"><span className="px-2 py-1 bg-brand-neutral-95 text-brand-neutral-40 rounded-md text-xs font-medium">Queued</span></td>
+                           <td className="px-4 py-3 text-right text-brand-neutral-40">1d ago</td>
+                         </tr>
+                         <tr className="hover:bg-brand-neutral-99">
+                           <td className="px-4 py-3 font-medium text-brand-neutral-10">David Kim</td>
+                           <td className="px-4 py-3">+1 (555) 918-2736</td>
+                           <td className="px-4 py-3"><span className="px-2 py-1 bg-brand-error-95 text-brand-error-50 rounded-md text-xs font-medium">Failed</span></td>
+                           <td className="px-4 py-3 text-right text-brand-neutral-40">1d ago</td>
+                         </tr>
+                       </tbody>
+                     </table>
                    </div>
                  </div>
                </div>
@@ -194,61 +228,61 @@ export default function LandingPage() {
       </section>
 
       {/* COMPLIANCE SECTION */}
-      <section className="py-24 bg-brand-neutral-10 text-white relative overflow-hidden">
-        <div className="absolute right-0 top-0 w-1/2 h-full opacity-10 pointer-events-none" style={{ background: 'radial-gradient(circle at center, var(--sys-primitive-color-collection-1-color-palettes-success-success40) 0%, transparent 70%)', filter: 'blur(80px)' }} />
+      <section className="py-24 bg-brand-neutral-95 text-brand-neutral-10 relative overflow-hidden">
+        <div className="absolute right-0 top-0 w-1/2 h-full opacity-5 pointer-events-none" style={{ background: 'radial-gradient(circle at center, var(--sys-primitive-color-collection-1-color-palettes-success-success40) 0%, transparent 70%)', filter: 'blur(80px)' }} />
         <div className="mx-auto max-w-7xl px-6 lg:px-8 relative z-10">
           <div className="flex flex-col md:flex-row items-center gap-12">
             <div className="flex-1">
-              <div className="inline-flex items-center justify-center p-3 rounded-2xl bg-brand-neutral-20 mb-6">
+              <div className="inline-flex items-center justify-center p-3 rounded-2xl bg-white border border-brand-neutral-90 mb-6 shadow-sm">
                 <ShieldCheck size={32} className="text-brand-success-50" />
               </div>
-              <h2 className="text-[var(--sys-typography-headline-headline-large-font-size)] font-[var(--sys-typography-headline-headline-large-font-weight)] tracking-[var(--sys-typography-headline-headline-large-letter-spacing)] mb-6">
+              <h2 className="text-[var(--sys-typography-headline-headline-large-font-size)] font-[var(--sys-typography-headline-headline-large-font-weight)] tracking-[var(--sys-typography-headline-headline-large-letter-spacing)] mb-6 text-brand-neutral-10">
                 Enterprise-grade compliance built-in
               </h2>
-              <p className="text-[var(--sys-typography-body-body-large-font-size)] text-brand-neutral-60 mb-8 max-w-xl">
+              <p className="text-[var(--sys-typography-body-body-large-font-size)] text-brand-neutral-40 mb-8 max-w-xl">
                 We take WhatsApp Business API guidelines seriously so you never have to worry about platform bans or spam complaints.
               </p>
               
               <ul className="space-y-4">
                 <li className="flex items-start gap-3">
                   <CheckCircle2 size={20} className="text-brand-success-50 shrink-0 mt-0.5" />
-                  <span className="text-brand-neutral-80"><strong>Opt-in enforcement:</strong> Ensure messaging only targets validated contacts.</span>
+                  <span className="text-brand-neutral-30"><strong>Opt-in enforcement:</strong> Ensure messaging only targets validated contacts.</span>
                 </li>
                 <li className="flex items-start gap-3">
                   <CheckCircle2 size={20} className="text-brand-success-50 shrink-0 mt-0.5" />
-                  <span className="text-brand-neutral-80"><strong>Auto-Unsubscribe:</strong> Instant recognition of STOP, UNSUBSCRIBE, and END keywords.</span>
+                  <span className="text-brand-neutral-30"><strong>Auto-Unsubscribe:</strong> Instant recognition of STOP, UNSUBSCRIBE, and END keywords.</span>
                 </li>
                 <li className="flex items-start gap-3">
                   <CheckCircle2 size={20} className="text-brand-success-50 shrink-0 mt-0.5" />
-                  <span className="text-brand-neutral-80"><strong>Idempotent Messaging:</strong> Flawless duplicate prevention guarantees no lead is contacted twice.</span>
+                  <span className="text-brand-neutral-30"><strong>Idempotent Messaging:</strong> Flawless duplicate prevention guarantees no lead is contacted twice.</span>
                 </li>
                 <li className="flex items-start gap-3">
                   <CheckCircle2 size={20} className="text-brand-success-50 shrink-0 mt-0.5" />
-                  <span className="text-brand-neutral-80"><strong>Rate Limit Awareness:</strong> Dynamic batching and delays protect your sender reputation.</span>
+                  <span className="text-brand-neutral-30"><strong>Rate Limit Awareness:</strong> Dynamic batching and delays protect your sender reputation.</span>
                 </li>
               </ul>
             </div>
             
             <div className="flex-1 w-full max-w-md">
-              <div className="bg-brand-neutral-20 rounded-2xl p-8 border border-brand-neutral-30 shadow-2xl">
-                <div className="flex items-center gap-4 mb-8 pb-8 border-b border-brand-neutral-30">
+              <div className="bg-white rounded-2xl p-8 border border-brand-neutral-90 shadow-xl">
+                <div className="flex items-center gap-4 mb-8 pb-8 border-b border-brand-neutral-95">
                   <div className="h-3 w-3 rounded-full bg-brand-success-50 shadow-[0_0_10px_var(--sys-primitive-color-collection-1-color-palettes-success-success50)] animate-pulse" />
-                  <span className="text-sm font-medium text-white tracking-widest uppercase">System Status Secure</span>
+                  <span className="text-sm font-bold text-brand-neutral-10 tracking-widest uppercase">System Status Secure</span>
                 </div>
                 <div className="space-y-4">
                   <div className="flex justify-between items-center text-sm">
-                    <span className="text-brand-neutral-60">Duplicate Checks</span>
-                    <span className="text-brand-success-50">Active</span>
+                    <span className="text-brand-neutral-40">Duplicate Checks</span>
+                    <span className="text-brand-success-50 font-medium">Active</span>
                   </div>
-                  <div className="w-full bg-brand-neutral-30 h-1.5 rounded-full overflow-hidden">
+                  <div className="w-full bg-brand-neutral-95 h-1.5 rounded-full overflow-hidden">
                     <div className="bg-brand-success-50 w-full h-full"></div>
                   </div>
                   
                   <div className="flex justify-between items-center text-sm mt-6">
-                    <span className="text-brand-neutral-60">Unsubscribe Handling</span>
-                    <span className="text-brand-success-50">Active</span>
+                    <span className="text-brand-neutral-40">Unsubscribe Handling</span>
+                    <span className="text-brand-success-50 font-medium">Active</span>
                   </div>
-                  <div className="w-full bg-brand-neutral-30 h-1.5 rounded-full overflow-hidden">
+                  <div className="w-full bg-brand-neutral-95 h-1.5 rounded-full overflow-hidden">
                     <div className="bg-brand-success-50 w-full h-full"></div>
                   </div>
                 </div>
@@ -295,7 +329,7 @@ export default function LandingPage() {
               </div>
               <h3 className="text-xl font-semibold mb-2">Professional</h3>
               <div className="flex items-baseline gap-1 mb-6">
-                <span className="text-4xl font-bold tracking-tight">$49</span>
+                <span className="text-4xl font-bold tracking-tight">$20</span>
                 <span className="text-sm font-medium text-brand-neutral-60">/month</span>
               </div>
               <ul className="space-y-4 mb-8 flex-1 text-sm text-brand-neutral-80">
