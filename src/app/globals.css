@@ -1,7 +1,12 @@
 @import "tailwindcss";
 
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
 @theme {
   --color-brand-primary: var(--sys-color-roles-1-primary-roles-primary-color-role);
+  --color-brand-on-primary: var(--sys-color-roles-1-primary-roles-on-primary-color-role);
   --color-brand-primary-container: var(--sys-color-roles-1-primary-roles-primary-container-color-role);
   --color-brand-neutral-10: var(--sys-primitive-color-collection-1-color-palettes-neutral-neutral10);
   --color-brand-neutral-20: var(--sys-primitive-color-collection-1-color-palettes-neutral-neutral20);
@@ -28,6 +33,7 @@
   --color-brand-primary-20: var(--sys-primitive-color-collection-1-color-palettes-primary-primary20);
   --color-brand-primary-30: var(--sys-primitive-color-collection-1-color-palettes-primary-primary30);
   --color-brand-primary-40: var(--sys-primitive-color-collection-1-color-palettes-primary-primary40);
+  --color-brand-primary-60: var(--sys-primitive-color-collection-1-color-palettes-primary-primary60);
   --color-brand-primary-80: var(--sys-primitive-color-collection-1-color-palettes-primary-primary80);
   --color-brand-primary-90: var(--sys-primitive-color-collection-1-color-palettes-primary-primary90);
   --color-brand-primary-95: var(--sys-primitive-color-collection-1-color-palettes-primary-primary95);
@@ -552,4 +558,49 @@ body {
   --sys-typography-label-label-small-text-case: none;
 }
 
+}
+
+@utility display-large {
+  font-family: var(--sys-typography-display-display-large-font-family, Inter), sans-serif;
+  font-size: clamp(2.25rem, 5vw + 1rem, 3.5625rem);
+  font-weight: var(--sys-typography-display-display-large-font-weight, 500);
+  letter-spacing: var(--sys-typography-display-display-large-letter-spacing, -4px);
+  line-height: clamp(2.75rem, 5.5vw + 1rem, 4rem);
+}
+
+@utility body-large {
+  font-family: var(--sys-typography-body-body-large-font-family, Inter), sans-serif;
+  font-size: 1rem;
+  font-weight: var(--sys-typography-body-body-large-font-weight, 500);
+  letter-spacing: var(--sys-typography-body-body-large-letter-spacing, -0.95px);
+  line-height: 1.5;
+}
+
+@utility title-large {
+  font-family: var(--sys-typography-title-title-large-font-family, Inter), sans-serif;
+  font-size: 1.375rem;
+  font-weight: var(--sys-typography-title-title-large-font-weight, 600);
+  letter-spacing: var(--sys-typography-title-title-large-letter-spacing, -1px);
+  line-height: 1.75rem;
+}
+
+@utility title-medium {
+  font-family: var(--sys-typography-title-title-medium-font-family, Inter), sans-serif;
+  font-size: 1rem;
+  font-weight: var(--sys-typography-title-title-medium-font-weight, 600);
+  letter-spacing: var(--sys-typography-title-title-medium-letter-spacing, -1px);
+  line-height: 1.5;
+}
+
+@utility label-large {
+  font-family: var(--sys-typography-label-label-large-font-family, Inter), sans-serif;
+  font-size: 0.875rem;
+  font-weight: var(--sys-typography-label-label-large-font-weight, 500);
+  letter-spacing: var(--sys-typography-label-label-large-letter-spacing, -0.85px);
+  line-height: 1.25;
+}
+
+label.font-medium {
+  color: #000000 !important;
+  font-weight: 500 !important;
 }

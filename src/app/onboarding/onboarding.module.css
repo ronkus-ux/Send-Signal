@@ -1,0 +1,325 @@
+.container {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+  background-color: var(--sys-color-roles-1-primary-roles-on-primary-color-role, #ffffff);
+}
+
+.card {
+  width: 100%;
+  max-width: 540px;
+  background-color: transparent;
+  display: flex;
+  flex-direction: column;
+}
+
+.title {
+  font-size: var(--sys-typography-title-title-large-font-size, 22px);
+  font-weight: 700;
+  line-height: var(--sys-typography-title-title-large-line-height, 28px);
+  letter-spacing: -0.04em;
+  color: var(--sys-primitive-color-collection-1-color-palettes-neutral-neutral10, #1f1f1f);
+  margin-bottom: 24px;
+}
+
+/* Steps Progress Indicators */
+.stepsContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 32px;
+}
+
+.stepsRow {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.stepNumber {
+  font-size: var(--sys-typography-label-label-medium-font-size, 12px);
+  font-weight: 600;
+  color: var(--sys-primitive-color-collection-1-color-palettes-neutral-neutral50, #808080);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 2px solid var(--sys-primitive-color-collection-1-color-palettes-neutral-neutral80, #dbdbdb);
+  background-color: var(--sys-color-roles-1-primary-roles-on-primary-color-role, #ffffff);
+  flex-shrink: 0;
+}
+
+.stepNumberActive {
+  background-color: var(--sys-color-roles-1-primary-roles-primary-color-role, #037ce6);
+  color: var(--sys-color-roles-1-primary-roles-on-primary-color-role, #ffffff);
+  border-color: var(--sys-color-roles-1-primary-roles-primary-color-role, #037ce6);
+}
+
+.stepNumberCompleted {
+  background-color: var(--sys-color-roles-1-primary-roles-primary-color-role, #037ce6);
+  color: var(--sys-color-roles-1-primary-roles-on-primary-color-role, #ffffff);
+  border-color: var(--sys-color-roles-1-primary-roles-primary-color-role, #037ce6);
+}
+
+.stepLine {
+  flex-grow: 1;
+  height: 2px;
+  background-color: var(--sys-primitive-color-collection-1-color-palettes-neutral-neutral80, #dbdbdb);
+  margin: 0 8px;
+}
+
+.stepLineActive {
+  background-color: var(--sys-color-roles-1-primary-roles-primary-color-role, #037ce6);
+}
+
+.stepLabel {
+  font-size: var(--sys-typography-label-label-medium-font-size, 12px);
+  font-weight: 500;
+  color: var(--sys-color-roles-1-neutral-variant-roles-on-neutral-variant-container-color-role, #4c4c4c);
+  margin-top: 4px;
+}
+
+/* Step Content */
+.contentArea {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  min-height: 120px;
+}
+
+.subtitle {
+  font-family: 'Inter', sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 26px;
+  letter-spacing: -0.04em;
+  color: var(--sys-primitive-color-collection-1-color-palettes-neutral-neutral10, #1f1f1f);
+  margin-bottom: 12px;
+}
+
+.description {
+  font-family: var(--sys-typography-body-body-large-font-family, Inter), sans-serif;
+  font-size: var(--sys-typography-body-body-large-font-size, 16px);
+  font-weight: var(--sys-typography-body-body-large-font-weight, 500);
+  letter-spacing: var(--sys-typography-body-body-large-letter-spacing, -0.95px);
+  line-height: var(--sys-typography-body-body-large-line-height, 24px);
+  color: var(--sys-primitive-color-collection-1-color-palettes-neutral-neutral50, #808080);
+  margin-bottom: 24px;
+}
+
+/* Footer / Actions */
+.actionsRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 24px;
+  padding-top: 16px;
+}
+
+.backBtn {
+  padding: 10px 32px;
+  border-radius: 4px;
+  border: 1px solid var(--sys-primitive-color-collection-1-color-palettes-neutral-neutral80, #dbdbdb);
+  background-color: var(--sys-primitive-color-collection-1-color-palettes-neutral-neutral98, #fafafa);
+  color: var(--sys-primitive-color-collection-1-color-palettes-neutral-neutral60, #a3a3a3);
+  font-family: var(--sys-typography-label-label-large-font-family, Inter), sans-serif;
+  font-size: var(--sys-typography-label-label-large-font-size, 14px);
+  font-weight: 500;
+  line-height: 1.25;
+  letter-spacing: var(--sys-typography-label-label-large-letter-spacing, -0.85px);
+  cursor: not-allowed;
+  transition: all 0.2s ease;
+}
+
+.backBtnActive {
+  cursor: pointer;
+  background-color: var(--sys-primitive-color-collection-1-color-palettes-neutral-neutral95, #f5f5f5);
+  color: var(--sys-primitive-color-collection-1-color-palettes-neutral-neutral50, #808080);
+}
+
+.nextBtn {
+  padding: 10px 32px;
+  border-radius: 4px;
+  border: none;
+  background-color: var(--sys-color-roles-1-primary-roles-primary-color-role, #037ce6);
+  color: var(--sys-color-roles-1-primary-roles-on-primary-color-role, #ffffff);
+  font-family: var(--sys-typography-label-label-large-font-family, Inter), sans-serif;
+  font-size: var(--sys-typography-label-label-large-font-size, 14px);
+  font-weight: 500;
+  line-height: 1.25;
+  letter-spacing: var(--sys-typography-label-label-large-letter-spacing, -0.85px);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.2s ease;
+}
+
+.nextBtn:hover {
+  background-color: var(--sys-primitive-color-collection-1-color-palettes-primary-primary60, #36a0fc);
+}
+
+.nextBtn:active {
+  background-color: var(--sys-primitive-color-collection-1-color-palettes-primary-primary20, #013665);
+  transform: translateY(1px);
+}
+
+.logoCorner {
+  position: absolute;
+  bottom: 24px;
+  left: 24px;
+}
+
+/* WhatsApp connection Form */
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 16px;
+}
+
+.formLabel {
+  font-size: var(--sys-typography-label-label-medium-font-size, 12px);
+  font-weight: 500;
+  color: var(--sys-color-roles-1-neutral-variant-roles-on-neutral-variant-container-color-role, #4c4c4c);
+}
+
+.formInput {
+  width: 100%;
+  padding: 10px 14px;
+  font-size: var(--sys-typography-body-body-medium-font-size, 14px);
+  border: 1.5px solid var(--sys-primitive-color-collection-1-color-palettes-neutral-neutral80, #dbdbdb);
+  border-radius: 8px;
+  background-color: var(--sys-primitive-color-collection-1-color-palettes-neutral-neutral98, #fafafa);
+  color: var(--sys-color-roles-1-neutral-variant-roles-on-neutral-variant-container-color-role, #4c4c4c);
+  transition: all 0.2s ease;
+}
+
+.formInput:hover {
+  border-color: var(--sys-primitive-color-collection-1-color-palettes-neutral-neutral60, #a3a3a3);
+}
+
+.formInput:focus {
+  outline: none;
+  border-color: var(--sys-color-roles-1-primary-roles-primary-color-role, #037ce6);
+  box-shadow: 0 0 0 4px var(--sys-primitive-color-collection-1-color-palettes-primary-primary90, #dceeff);
+}
+
+.formError {
+  font-size: var(--sys-typography-label-label-medium-font-size, 12px);
+  font-weight: 500;
+  color: var(--sys-primitive-color-collection-1-color-palettes-error-error50, #ff0000);
+}
+
+.csvContainer {
+  border: 2px dashed var(--sys-primitive-color-collection-1-color-palettes-neutral-neutral80, #dbdbdb);
+  border-radius: 8px;
+  padding: 24px;
+  text-align: center;
+  background-color: transparent;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  position: relative;
+}
+
+.csvContainer:hover {
+  background-color: var(--sys-color-roles-1-primary-roles-primary-container-color-role, #dceeff);
+  border-color: var(--sys-primitive-color-collection-1-color-palettes-neutral-neutral80, #dbdbdb);
+}
+
+.csvContainerUploaded {
+  border: 2px dashed var(--sys-color-roles-1-primary-roles-on-primary-conainer-color-role, #013665);
+  border-radius: 8px;
+  padding: 40px;
+  text-align: center;
+  background-color: var(--sys-color-roles-1-primary-roles-primary-container-color-role, #dceeff);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.csvContainerUploading {
+  border: 2px dashed var(--sys-color-roles-1-primary-roles-primary-color-role, #037ce6);
+  border-radius: 8px;
+  padding: 24px;
+  text-align: center;
+  background-color: var(--sys-color-roles-1-primary-roles-primary-container-color-role, #dceeff);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+}
+
+.uploadingText {
+  font-size: var(--sys-typography-body-body-large-font-size, 16px);
+  font-weight: 600;
+  color: var(--sys-color-roles-1-primary-roles-on-primary-conainer-color-role, #013665);
+}
+
+.progressBarContainer {
+  width: 100%;
+  max-width: 320px;
+  height: 8px;
+  background-color: var(--sys-primitive-color-collection-1-color-palettes-neutral-neutral70, #b3b3b3);
+  border-radius: 4px;
+  overflow: hidden;
+  position: relative;
+}
+
+.progressBarFill {
+  height: 100%;
+  background-color: var(--sys-color-roles-1-primary-roles-primary-color-role, #037ce6);
+  border-radius: 4px;
+  transition: width 0.1s linear;
+}
+
+.progressPercent {
+  font-size: var(--sys-typography-label-label-medium-font-size, 12px);
+  color: var(--sys-primitive-color-collection-1-color-palettes-neutral-neutral40, #666666);
+}
+
+.csvIcon {
+  width: 40px;
+  height: 40px;
+  color: var(--sys-primitive-color-collection-1-color-palettes-neutral-neutral60, #a3a3a3);
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 16px;
+  transition: color 0.2s ease;
+}
+
+.csvTitle {
+  font-size: var(--sys-typography-body-body-medium-font-size, 14px);
+  font-weight: 500;
+  color: var(--sys-primitive-color-collection-1-color-palettes-neutral-neutral20, #1f1f1f);
+  transition: color 0.2s ease;
+}
+
+.csvSubtitle {
+  font-size: var(--sys-typography-label-label-medium-font-size, 12px);
+  color: var(--sys-primitive-color-collection-1-color-palettes-neutral-neutral50, #808080);
+  margin-top: 8px;
+  transition: color 0.2s ease;
+}
+
+.csvContainer:hover .csvIcon,
+.csvContainer:hover .csvTitle,
+.csvContainer:hover .csvSubtitle {
+  color: var(--sys-color-roles-1-primary-roles-on-primary-conainer-color-role, #013665) !important;
+}
+
+.fileInput {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+}

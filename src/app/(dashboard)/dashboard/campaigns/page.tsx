@@ -47,6 +47,7 @@ export default async function CampaignsPage() {
           whatsappAccounts={whatsappAccounts}
           templates={templates}
           leads={leads}
+          hasNoWhatsappAccount={whatsappAccounts.length === 0}
         />
       </div>
 
@@ -73,7 +74,11 @@ export default async function CampaignsPage() {
       ) : (
         <div className="space-y-4">
           {campaigns.map(campaign => (
-            <CampaignCard key={campaign.id} campaign={campaign} />
+            <CampaignCard 
+              key={campaign.id} 
+              campaign={campaign} 
+              hasNoWhatsappAccount={whatsappAccounts.length === 0}
+            />
           ))}
         </div>
       )}

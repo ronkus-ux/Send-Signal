@@ -106,7 +106,7 @@ export function CsvImporter() {
 
         <div className="p-6">
           {step === 'UPLOAD' && (
-            <div className="border-2 border-dashed border-[var(--sys-primitive-color-collection-1-color-palettes-neutral-neutral80)] rounded-lg p-10 text-center hover:bg-[var(--sys-primitive-color-collection-1-color-palettes-neutral-neutral98)] transition-colors cursor-pointer relative">
+            <div className="border-2 border-dashed border-[var(--sys-primitive-color-collection-1-color-palettes-neutral-neutral80)] rounded-lg p-6 text-center hover:bg-[var(--sys-primitive-color-collection-1-color-palettes-neutral-neutral98)] transition-colors cursor-pointer relative">
               <input 
                 type="file" 
                 accept=".csv" 
@@ -158,7 +158,7 @@ export function CsvImporter() {
                 <button 
                   onClick={executeImport}
                   disabled={!mapping.phone_number}
-                  className="rounded-md bg-[var(--sys-color-roles-1-primary-roles-primary-color-role)] px-6 py-2 text-sm font-medium text-white shadow-sm hover:bg-[var(--sys-primitive-color-collection-1-color-palettes-primary-primary30)] transition-colors disabled:opacity-50"
+                  className="rounded-md bg-[var(--sys-color-roles-1-primary-roles-primary-color-role)] px-6 py-2 text-sm font-medium text-white shadow-sm hover:bg-[var(--sys-primitive-color-collection-1-color-palettes-primary-primary60)] transition-colors disabled:opacity-50"
                 >
                   Import {data.length} Leads
                 </button>
@@ -178,14 +178,14 @@ export function CsvImporter() {
               <div className="w-12 h-12 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-4">
                 <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
               </div>
-              <h4 className="text-lg font-medium text-[var(--sys-primitive-color-collection-1-color-palettes-neutral-neutral10)] mb-2">Import Complete!</h4>
+              <h4 className="text-base font-medium text-[var(--sys-primitive-color-collection-1-color-palettes-neutral-neutral10)] mb-2">Import Complete!</h4>
               <p className="text-sm text-[var(--sys-primitive-color-collection-1-color-palettes-neutral-neutral50)] mb-6">
                 Successfully imported <strong>{importResult?.imported}</strong> leads. 
                 {importResult?.failed ? ` Skipped ${importResult.failed} invalid rows.` : ''}
               </p>
               <button 
                 onClick={reset}
-                className="w-full rounded-md bg-[var(--sys-color-roles-1-primary-roles-primary-color-role)] px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-[var(--sys-primitive-color-collection-1-color-palettes-primary-primary30)] transition-colors"
+                className="w-full rounded-md bg-[var(--sys-color-roles-1-primary-roles-primary-color-role)] px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-[var(--sys-primitive-color-collection-1-color-palettes-primary-primary60)] transition-colors"
               >
                 Done
               </button>

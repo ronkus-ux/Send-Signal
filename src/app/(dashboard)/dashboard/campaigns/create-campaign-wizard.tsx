@@ -15,11 +15,12 @@ type Props = {
   whatsappAccounts: WhatsappAccount[];
   templates: Template[];
   leads: Lead[];
+  hasNoWhatsappAccount?: boolean;
 };
 
 const SAMPLE_LEAD = { first_name: 'Alex', last_name: 'Johnson', full_name: 'Alex Johnson', phone_number: '+1234567890', email: 'alex@example.com' };
 
-export function CreateCampaignWizard({ whatsappAccounts, templates, leads }: Props) {
+export function CreateCampaignWizard({ whatsappAccounts, templates, leads, hasNoWhatsappAccount = false }: Props) {
   const [isOpen, setIsOpen] = useState(false);
   const [step, setStep] = useState<Step>(1);
   const [selectedAccountId, setSelectedAccountId] = useState('');
@@ -68,8 +69,14 @@ export function CreateCampaignWizard({ whatsappAccounts, templates, leads }: Pro
   if (!isOpen) {
     return (
       <button
-        onClick={() => setIsOpen(true)}
-        className="flex items-center gap-2 rounded-md bg-[var(--sys-color-roles-1-primary-roles-primary-color-role)] px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-[var(--sys-primitive-color-collection-1-color-palettes-primary-primary30)] transition-colors"
+        onClick={() => {
+          if (!hasNoWhatsappAccount) {
+            setIsOpen(true);
+          }
+        }}
+        disabled={hasNoWhatsappAccount}
+        className="flex items-center gap-2 rounded-md bg-[var(--sys-color-roles-1-primary-roles-primary-color-role)] px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-[var(--sys-primitive-color-collection-1-color-palettes-primary-primary60)] transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+        title={hasNoWhatsappAccount ? "Connect a WhatsApp account to create campaigns" : "New Campaign"}
       >
         <Plus className="w-4 h-4" />
         New Campaign
@@ -240,7 +247,7 @@ export function CreateCampaignWizard({ whatsappAccounts, templates, leads }: Pro
                 type="button"
                 onClick={() => setStep(s => (s + 1) as Step)}
                 disabled={(step === 1 && (!selectedAccountId || !selectedTemplateId)) || (step === 2 && selectedLeadIds.size === 0)}
-                className="flex items-center gap-1 rounded-md bg-[var(--sys-color-roles-1-primary-roles-primary-color-role)] px-5 py-2 text-sm font-medium text-white shadow-sm hover:bg-[var(--sys-primitive-color-collection-1-color-palettes-primary-primary30)] transition-colors disabled:opacity-40"
+                className="flex items-center gap-1 rounded-md bg-[var(--sys-color-roles-1-primary-roles-primary-color-role)] px-5 py-2 text-sm font-medium text-white shadow-sm hover:bg-[var(--sys-primitive-color-collection-1-color-palettes-primary-primary60)] transition-colors disabled:opacity-40"
               >
                 Next <ChevronRight className="w-4 h-4" />
               </button>
@@ -248,7 +255,7 @@ export function CreateCampaignWizard({ whatsappAccounts, templates, leads }: Pro
               <button
                 type="submit"
                 disabled={isPending || selectedLeadIds.size === 0}
-                className="rounded-md bg-[var(--sys-color-roles-1-primary-roles-primary-color-role)] px-6 py-2 text-sm font-medium text-white shadow-sm hover:bg-[var(--sys-primitive-color-collection-1-color-palettes-primary-primary30)] transition-colors disabled:opacity-50"
+                className="rounded-md bg-[var(--sys-color-roles-1-primary-roles-primary-color-role)] px-6 py-2 text-sm font-medium text-white shadow-sm hover:bg-[var(--sys-primitive-color-collection-1-color-palettes-primary-primary60)] transition-colors disabled:opacity-50"
               >
                 {isPending ? 'Creating...' : 'Create Campaign'}
               </button>

@@ -1,5 +1,6 @@
 import { prisma } from '@/lib/prisma';
 import { getSession } from '@/lib/auth/session';
+import { decryptText } from '@/lib/auth/crypto';
 import { ConnectWhatsappForm } from './client-form';
 import { WhatsappAccountList } from './account-list';
 
@@ -10,6 +11,25 @@ export default async function SettingsPage() {
   const accounts = await prisma.whatsappAccount.findMany({
     where: { user_id: session!.user.id },
     orderBy: { created_at: 'desc' }
+  });
+
+  const decryptedAccounts = accounts.map((account) => {
+    let webhook_verify_token = '';
+    if (account.webhook_verify_token_encrypted) {
+      try {
+        webhook_verify_token = decryptText(account.webhook_verify_token_encrypted);
+      } catch (err) {
+        console.error('Failed to decrypt webhook verify token:', err);
+      }
+    }
+    return {
+      id: account.id,
+      account_name: account.account_name,
+      display_phone_number: account.display_phone_number,
+      phone_number_id: account.phone_number_id,
+      is_active: account.is_active,
+      webhook_verify_token,
+    };
   });
 
   return (
@@ -47,7 +67,7 @@ export default async function SettingsPage() {
             <ConnectWhatsappForm />
           </div>
 
-          <WhatsappAccountList accounts={accounts} />
+          <WhatsappAccountList accounts={decryptedAccounts} />
         </div>
 
       </div>

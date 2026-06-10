@@ -1,6 +1,7 @@
 'use server';
 
 import { revalidatePath } from 'next/cache';
+import { randomUUID } from 'crypto';
 import { prisma } from '../prisma';
 import { getSession } from '../auth/session';
 import { encryptText } from '../auth/crypto';
@@ -20,7 +21,7 @@ export async function connectWhatsappAccount(
     phone_number_id: formData.get('phone_number_id'),
     business_account_id: formData.get('business_account_id'),
     access_token: formData.get('access_token'),
-    webhook_verify_token: formData.get('webhook_verify_token'),
+    webhook_verify_token: formData.get('webhook_verify_token') || `wh_${randomUUID().replace(/-/g, '')}`,
     display_phone_number: formData.get('display_phone_number'),
   });
 

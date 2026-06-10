@@ -27,3 +27,16 @@ export type RegisterFormState = {
   };
   message?: string;
 };
+
+export const ForgotPasswordSchema = z.object({
+  email: z.string().email({ message: 'Please enter a valid email address.' }),
+});
+
+export type ForgotPasswordFormState = {
+  errors?: {
+    email?: string[];
+  };
+  message?: string;
+  success?: boolean;
+};
+

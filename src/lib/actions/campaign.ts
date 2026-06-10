@@ -88,6 +88,14 @@ export async function startCampaign(campaignId: string) {
   const session = await getSession();
   if (!session?.user) throw new Error('Unauthorized');
 
+  // Backend guard: check if user has at least one active WhatsApp account
+  const whatsappAccountCount = await prisma.whatsappAccount.count({
+    where: { user_id: session.user.id, is_active: true }
+  });
+  if (whatsappAccountCount === 0) {
+    throw new Error('No active WhatsApp account connected. Please connect a WhatsApp account first.');
+  }
+
   const campaign = await prisma.campaign.findFirst({
     where: { id: campaignId, user_id: session.user.id, status: 'DRAFT' },
     include: {

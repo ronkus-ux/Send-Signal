@@ -1,8 +1,8 @@
 # General skills rules
-This file defines basline engineering and product standards applied across this repository. 
+This file defines baseline engineering and product standards applied across this repository. 
 
 ## Code Organisation
-Readable and maintainable codes is prioritised.
+Readable and maintainable code is prioritised.
 
 Large files are avoided. Features are organized into modules such as
 
@@ -22,7 +22,7 @@ Large files are avoided. Features are organized into modules such as
 
 
 ## Data Validation
-Client input is treated as untrustworthy. All inputs is validated and sanitized before use.
+Client input is treated as untrustworthy. All inputs are validated and sanitized before use.
 
 Validation occurs on the server side before data becomes persistent or before message is being sent to users.
 
@@ -66,7 +66,10 @@ Campaign execution must have controls for:
 ## Testing expectations
 Each feature includes verification of
 
-- successful primary workflows
+- successful primary workflows 
 - invalid input behaviour
 - compliance behaviour
 - edge case behaviour
+
+## Database Handling
+Always use `npx prisma db push` and `npx prisma generate` to sync changes whenever schema definitions are updated or queries return unexpected invocation errors.

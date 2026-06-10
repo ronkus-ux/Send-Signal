@@ -65,7 +65,7 @@ body {
 .form-label {
   font-size: var(--sys-typography-label-label-medium-font-size, 12px);
   font-weight: var(--sys-typography-label-label-medium-font-weight, 500);
-  color: var(--sys-primitive-color-collection-1-color-palettes-neutral-neutral30, #575757);
+  color: var(--sys-color-roles-1-neutral-variant-roles-on-neutral-variant-container-color-role, #4c4c4c);
 }
 
 .form-input {
@@ -73,10 +73,10 @@ body {
   padding: 12px 16px;
   font-size: var(--sys-typography-body-body-medium-font-size, 14px);
   font-family: inherit;
-  border: 1px solid var(--sys-primitive-color-collection-1-color-palettes-neutral-neutral80, #dbdbdb);
+  border: 1.5px solid var(--sys-primitive-color-collection-1-color-palettes-neutral-neutral80, #dbdbdb);
   border-radius: 8px;
   background-color: var(--sys-primitive-color-collection-1-color-palettes-neutral-neutral100, #ffffff);
-  color: var(--sys-primitive-color-collection-1-color-palettes-neutral-neutral10, #1f1f1f);
+  color: var(--sys-color-roles-1-neutral-variant-roles-on-neutral-variant-container-color-role, #4c4c4c);
   transition: all 0.2s ease;
 }
 
@@ -127,7 +127,8 @@ body {
   color: var(--sys-primitive-color-collection-1-color-palettes-neutral-neutral30, #575757);
 }
 
-.forgot-password, .signup-link {
+.forgot-password,
+.signup-link {
   font-size: var(--sys-typography-label-label-medium-font-size, 12px);
   font-weight: var(--sys-typography-label-label-medium-font-weight, 500);
   color: var(--sys-color-roles-1-primary-roles-primary-color-role, #037ce6);
@@ -135,15 +136,18 @@ body {
   transition: color 0.2s ease;
 }
 
-.forgot-password:hover, .signup-link:hover {
+.forgot-password:hover,
+.signup-link:hover {
   color: var(--sys-primitive-color-collection-1-color-palettes-primary-primary30, #025197);
   text-decoration: underline;
 }
 
-.forgot-password:focus, .signup-link:focus {
-  outline: 2px solid var(--sys-color-roles-1-primary-roles-primary-color-role, #037ce6);
-  outline-offset: 4px;
-  border-radius: 2px;
+.forgot-password:focus,
+.signup-link:focus,
+.forgot-password:active,
+.signup-link:active {
+  outline: none;
+  text-decoration: underline;
 }
 
 .cta-button {
@@ -162,18 +166,23 @@ body {
 }
 
 .cta-button:hover {
-  background-color: var(--sys-primitive-color-collection-1-color-palettes-primary-primary30, #025197);
+  background-color: var(--sys-primitive-color-collection-1-color-palettes-primary-primary60, #36a0fc);
 }
 
-.cta-button:focus, .cta-button:focus-visible {
+.cta-button:focus,
+.cta-button:focus-visible {
   outline: none;
   box-shadow: 0 0 0 4px var(--sys-primitive-color-collection-1-color-palettes-primary-primary90, #dceeff),
-              0 0 0 2px var(--sys-color-roles-1-primary-roles-primary-color-role, #037ce6) inset;
+    0 0 0 2px var(--sys-color-roles-1-primary-roles-primary-color-role, #037ce6) inset;
 }
 
 .cta-button:active {
   background-color: var(--sys-primitive-color-collection-1-color-palettes-primary-primary20, #013665);
   transform: translateY(1px);
+}
+
+.cta-button:disabled {
+  cursor: pointer;
 }
 
 .login-footer {

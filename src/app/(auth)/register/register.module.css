@@ -102,6 +102,7 @@
   background-color: var(--sys-color-roles-1-primary-roles-primary-container-color-role, #dceeff) !important;
 }
 
+
 .forgotPassword {
   font-size: var(--sys-typography-label-label-medium-font-size, 12px);
   font-weight: var(--sys-typography-label-label-medium-font-weight, 500);
@@ -180,32 +181,34 @@
   color: var(--sys-primitive-color-collection-1-color-palettes-neutral-neutral50, #808080);
 }
 
-.formOptions {
+.passwordRequirementsList {
+  margin-top: 6px;
+  padding: 0;
+  list-style: none;
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 4px;
+  flex-direction: column;
+  gap: 4px;
+  animation: fadeIn 0.2s ease-in-out;
 }
 
-.rememberMe {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  cursor: pointer;
-}
-
-.checkboxInput {
-  width: 16px;
-  height: 16px;
-  border-radius: 4px;
-  accent-color: var(--sys-color-roles-1-primary-roles-primary-color-role, #037ce6);
-  cursor: pointer;
-}
-
-.checkboxLabel {
+.passwordRequirementItem {
   font-size: var(--sys-typography-label-label-medium-font-size, 12px);
-  font-weight: var(--sys-typography-label-label-medium-font-weight, 500);
-  color: var(--sys-primitive-color-collection-1-color-palettes-neutral-neutral30, #575757);
+  font-weight: 500;
+  color: var(--sys-primitive-color-collection-1-color-palettes-neutral-neutral50, #808080);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-2px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .submitError {

@@ -27,7 +27,7 @@ const STATUS_STYLES: Record<string, string> = {
   FAILED: 'bg-red-50 text-red-700 ring-red-600/10',
 };
 
-export function CampaignCard({ campaign }: { campaign: Campaign }) {
+export function CampaignCard({ campaign, hasNoWhatsappAccount = false }: { campaign: Campaign; hasNoWhatsappAccount?: boolean }) {
   const [isPending, startTransition] = useTransition();
 
   return (
@@ -49,9 +49,9 @@ export function CampaignCard({ campaign }: { campaign: Campaign }) {
             <>
               <button
                 onClick={() => startTransition(() => startCampaign(campaign.id))}
-                disabled={isPending}
+                disabled={isPending || hasNoWhatsappAccount}
                 className="flex items-center gap-1.5 rounded-md bg-green-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-green-700 transition-colors disabled:opacity-50"
-                title="Start Campaign"
+                title={hasNoWhatsappAccount ? "Connect a WhatsApp account to start campaign" : "Start Campaign"}
               >
                 <Play className="w-3 h-3" />
                 Start

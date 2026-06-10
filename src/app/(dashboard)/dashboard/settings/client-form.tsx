@@ -2,10 +2,12 @@
 
 import { useActionState, useState } from 'react';
 import { connectWhatsappAccount } from '@/lib/actions/whatsapp';
+import { Eye, EyeOff } from 'lucide-react';
 
 export function ConnectWhatsappForm() {
   const [isOpen, setIsOpen] = useState(false);
   const [state, formAction, isPending] = useActionState(connectWhatsappAccount, {});
+  const [showAccessToken, setShowAccessToken] = useState(false);
 
   // Close modal on success
   if (state?.message === 'SUCCESS' && isOpen) {
@@ -17,7 +19,7 @@ export function ConnectWhatsappForm() {
     return (
       <button 
         onClick={() => setIsOpen(true)}
-        className="rounded-md bg-[var(--sys-color-roles-1-primary-roles-primary-color-role)] px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-[var(--sys-primitive-color-collection-1-color-palettes-primary-primary30)] transition-colors"
+        className="rounded-md bg-[var(--sys-color-roles-1-primary-roles-primary-color-role)] px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-[var(--sys-primitive-color-collection-1-color-palettes-primary-primary60)] transition-colors"
       >
         Connect Account
       </button>
@@ -49,7 +51,7 @@ export function ConnectWhatsappForm() {
             {state.errors?.display_phone_number && <p className="text-xs text-[var(--sys-primitive-color-collection-1-color-palettes-error-error50)] mt-1">{state.errors.display_phone_number[0]}</p>}
           </div>
           <div>
-            <label className="block text-sm font-medium text-[var(--sys-primitive-color-collection-1-color-palettes-neutral-neutral30)] mb-1">Phone Number ID</label>
+            <label className="block text-sm font-medium text-[var(--sys-primitive-color-collection-1-color-palettes-neutral-neutral30)] mb-1">WhatsApp Phone Number ID</label>
             <input type="text" name="phone_number_id" className="w-full h-10 px-3 rounded-md border border-[var(--sys-primitive-color-collection-1-color-palettes-neutral-neutral80)] bg-white text-sm outline-none focus:border-[var(--sys-color-roles-1-primary-roles-primary-color-role)]" placeholder="From Meta Developer Console" />
             {state.errors?.phone_number_id && <p className="text-xs text-[var(--sys-primitive-color-collection-1-color-palettes-error-error50)] mt-1">{state.errors.phone_number_id[0]}</p>}
           </div>
@@ -61,16 +63,27 @@ export function ConnectWhatsappForm() {
         </div>
         
         <div>
-          <label className="block text-sm font-medium text-[var(--sys-primitive-color-collection-1-color-palettes-neutral-neutral30)] mb-1">Permanent Access Token</label>
-          <input type="password" name="access_token" className="w-full h-10 px-3 rounded-md border border-[var(--sys-primitive-color-collection-1-color-palettes-neutral-neutral80)] bg-white text-sm outline-none focus:border-[var(--sys-color-roles-1-primary-roles-primary-color-role)]" placeholder="EAAL..." />
+          <label className="block text-sm font-medium text-[var(--sys-primitive-color-collection-1-color-palettes-neutral-neutral30)] mb-1">System User Access Token</label>
+          <div className="relative flex items-center w-full">
+            <input 
+              type={showAccessToken ? "text" : "password"} 
+              name="access_token" 
+              className="w-full h-10 pl-3 pr-10 rounded-md border border-[var(--sys-primitive-color-collection-1-color-palettes-neutral-neutral80)] bg-white text-sm outline-none focus:border-[var(--sys-color-roles-1-primary-roles-primary-color-role)]" 
+              placeholder="EAAL..." 
+            />
+            <button
+              type="button"
+              onClick={() => setShowAccessToken(!showAccessToken)}
+              className="absolute right-3 text-[var(--sys-primitive-color-collection-1-color-palettes-neutral-neutral50)] hover:text-[var(--sys-primitive-color-collection-1-color-palettes-neutral-neutral20)] flex items-center justify-center p-1 rounded-full hover:bg-neutral-100 transition-colors"
+              title={showAccessToken ? "Hide access token" : "Show access token"}
+            >
+              {showAccessToken ? <EyeOff size={16} /> : <Eye size={16} />}
+            </button>
+          </div>
           {state.errors?.access_token && <p className="text-xs text-[var(--sys-primitive-color-collection-1-color-palettes-error-error50)] mt-1">{state.errors.access_token[0]}</p>}
         </div>
 
-        <div>
-          <label className="block text-sm font-medium text-[var(--sys-primitive-color-collection-1-color-palettes-neutral-neutral30)] mb-1">Webhook Verify Token</label>
-          <input type="text" name="webhook_verify_token" className="w-full h-10 px-3 rounded-md border border-[var(--sys-primitive-color-collection-1-color-palettes-neutral-neutral80)] bg-white text-sm outline-none focus:border-[var(--sys-color-roles-1-primary-roles-primary-color-role)]" placeholder="Your custom verify token" />
-          {state.errors?.webhook_verify_token && <p className="text-xs text-[var(--sys-primitive-color-collection-1-color-palettes-error-error50)] mt-1">{state.errors.webhook_verify_token[0]}</p>}
-        </div>
+
 
         {state.message && state.message !== 'SUCCESS' && (
           <p className="text-sm font-medium text-[var(--sys-primitive-color-collection-1-color-palettes-error-error50)]">
@@ -82,7 +95,7 @@ export function ConnectWhatsappForm() {
           <button 
             type="submit" 
             disabled={isPending}
-            className="rounded-md bg-[var(--sys-color-roles-1-primary-roles-primary-color-role)] px-6 py-2 text-sm font-medium text-white shadow-sm hover:bg-[var(--sys-primitive-color-collection-1-color-palettes-primary-primary30)] transition-colors disabled:opacity-50"
+            className="rounded-md bg-[var(--sys-color-roles-1-primary-roles-primary-color-role)] px-6 py-2 text-sm font-medium text-white shadow-sm hover:bg-[var(--sys-primitive-color-collection-1-color-palettes-primary-primary60)] transition-colors disabled:opacity-50"
           >
             {isPending ? 'Connecting...' : 'Connect'}
           </button>

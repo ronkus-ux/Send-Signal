@@ -1,0 +1,17 @@
+- Visual Design principles for color
+- Visual Design principles for typography
+- Regular layout and auto layout in figma
+- Spacing ( Padding and margin )
+- 4 Directions in design
+- Use material design for creating a typography system
+- Interaction Design ( Using components & Variants )
+- Color effects ( Using gradients)
+- Setting up a color system using variables
+- Setting up a typography system using Figma style library
+- Responsive Design ( Using constraints & Auto layout )
+- Canvas stacking.
+- Illustration
+- Creating a design presentation for Behance
+- Framer
+- All Quizzes
+
