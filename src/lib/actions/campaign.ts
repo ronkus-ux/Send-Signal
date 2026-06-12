@@ -1,6 +1,7 @@
 'use server';
 
 import { revalidatePath } from 'next/cache';
+import { after } from 'next/server';
 import { prisma } from '../prisma';
 import { getSession } from '../auth/session';
 import { CreateCampaignSchema, CreateCampaignFormState } from '../validations/campaign';
@@ -76,7 +77,7 @@ export async function createCampaign(
       skipDuplicates: true,
     });
 
-    revalidatePath('/dashboard/campaigns');
+    revalidatePath('/dashboard');
     return { message: 'SUCCESS', campaignId: campaign.id };
   } catch (error) {
     console.error('Failed to create campaign:', error);
@@ -154,10 +155,16 @@ export async function startCampaign(campaignId: string) {
     await prisma.message.createMany({ data: messageData, skipDuplicates: true });
   }
 
-  // Dispatch via WhatsApp API
-  await dispatchCampaignMessages(campaignId);
+  // Dispatch via WhatsApp API in the background (preventing HTTP timeout)
+  after(async () => {
+    try {
+      await dispatchCampaignMessages(campaignId);
+    } catch (error) {
+      console.error(`Error in background dispatch for campaign ${campaignId}:`, error);
+    }
+  });
 
-  revalidatePath('/dashboard/campaigns');
+  revalidatePath('/dashboard');
 }
 
 async function dispatchCampaignMessages(campaignId: string) {
@@ -280,5 +287,5 @@ export async function deleteCampaign(campaignId: string) {
     data: { deleted_at: new Date() },
   });
 
-  revalidatePath('/dashboard/campaigns');
+  revalidatePath('/dashboard');
 }

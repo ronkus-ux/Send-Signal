@@ -4,7 +4,7 @@ import { useActionState, useState } from 'react';
 import { connectWhatsappAccount } from '@/lib/actions/whatsapp';
 import { Eye, EyeOff } from 'lucide-react';
 
-export function ConnectWhatsappForm() {
+export function ConnectWhatsappForm({ onSuccess }: { onSuccess?: () => void }) {
   const [isOpen, setIsOpen] = useState(false);
   const [state, formAction, isPending] = useActionState(connectWhatsappAccount, {});
   const [showAccessToken, setShowAccessToken] = useState(false);
@@ -12,7 +12,7 @@ export function ConnectWhatsappForm() {
   // Close modal on success
   if (state?.message === 'SUCCESS' && isOpen) {
     setIsOpen(false);
-    // Reset state implicitly by re-rendering without form
+    onSuccess?.();
   }
 
   if (!isOpen) {

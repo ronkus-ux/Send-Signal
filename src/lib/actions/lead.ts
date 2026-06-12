@@ -55,7 +55,7 @@ export async function addLead(
       }
     });
 
-    revalidatePath('/dashboard/leads');
+    revalidatePath('/dashboard');
     return { message: 'SUCCESS' };
   } catch (err) {
     console.error('Failed to add lead:', err);
@@ -99,7 +99,7 @@ export async function importLeads(leads: Record<string, unknown>[]) {
       skipDuplicates: true,
     });
     
-    revalidatePath('/dashboard/leads');
+    revalidatePath('/dashboard');
   }
 
   return { 
@@ -122,5 +122,5 @@ export async function deleteLead(leadId: string) {
     }
   });
 
-  revalidatePath('/dashboard/leads');
+  revalidatePath('/dashboard');
 }

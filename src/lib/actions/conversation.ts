@@ -85,6 +85,6 @@ export async function sendManualReply(conversationId: string, text: string) {
     })
   ]);
 
-  revalidatePath('/dashboard/conversations');
+  revalidatePath('/dashboard');
   return { success: true };
 }

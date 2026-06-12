@@ -82,9 +82,11 @@ model User {
   email         String   @unique
   password_hash String
   role          UserRole @default(OWNER)
-  is_active     Boolean  @default(true)
-  created_at    DateTime @default(now())
-  updated_at    DateTime @updatedAt
+  is_active              Boolean   @default(true)
+  reset_token_hash       String?   @unique
+  reset_token_expires_at DateTime?
+  created_at             DateTime  @default(now())
+  updated_at             DateTime  @updatedAt
 
   sessions            Session[]
   whatsapp_accounts   WhatsappAccount[]

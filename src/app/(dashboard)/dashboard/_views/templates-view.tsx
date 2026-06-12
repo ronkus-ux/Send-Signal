@@ -1,19 +1,28 @@
-import { prisma } from '@/lib/prisma';
-import { getSession } from '@/lib/auth/session';
-import { CreateTemplateModal } from './create-template-modal';
-import { TemplateGrid } from './template-grid';
+'use client';
 
-export default async function TemplatesPage() {
-  const session = await getSession();
+import React, { useEffect, useState } from 'react';
+import { fetchTemplatesData } from '@/lib/actions/dashboard';
+import { CreateTemplateModal } from '../templates/create-template-modal';
+import { TemplateGrid } from '../templates/template-grid';
 
-  const templates = await prisma.template.findMany({
-    where: {
-      user_id: session!.user.id,
-      is_archived: false,
-      deleted_at: null,
-    },
-    orderBy: { created_at: 'desc' },
-  });
+export function TemplatesView() {
+  const [templates, setTemplates] = useState<any[] | null>(null);
+
+  const loadData = () => {
+    fetchTemplatesData().then(setTemplates).catch(console.error);
+  };
+
+  useEffect(() => {
+    loadData();
+  }, []);
+
+  if (!templates) {
+    return (
+      <div className="flex items-center justify-center min-h-[300px]">
+        <div className="w-8 h-8 border-4 border-[var(--sys-color-roles-1-primary-roles-primary-color-role)] border-t-transparent rounded-full animate-spin"></div>
+      </div>
+    );
+  }
 
   return (
     <div className="max-w-6xl mx-auto">
@@ -22,7 +31,7 @@ export default async function TemplatesPage() {
           <h1 className="text-2xl font-semibold text-[var(--sys-primitive-color-collection-1-color-palettes-neutral-neutral10)] tracking-tight">Message Templates</h1>
           <p className="text-sm text-[var(--sys-primitive-color-collection-1-color-palettes-neutral-neutral50)] mt-1">Create reusable messages with dynamic placeholders for personalisation.</p>
         </div>
-        <CreateTemplateModal />
+        <CreateTemplateModal onSuccess={loadData} />
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">

@@ -34,7 +34,7 @@ export async function createTemplate(
       },
     });
 
-    revalidatePath('/dashboard/templates');
+    revalidatePath('/dashboard');
     return { message: 'SUCCESS' };
   } catch (error: unknown) {
     if (typeof error === 'object' && error !== null && 'code' in error && error.code === 'P2002') {
@@ -53,5 +53,5 @@ export async function deleteTemplate(templateId: string) {
     where: { id: templateId, user_id: session.user.id },
   });
 
-  revalidatePath('/dashboard/templates');
+  revalidatePath('/dashboard');
 }

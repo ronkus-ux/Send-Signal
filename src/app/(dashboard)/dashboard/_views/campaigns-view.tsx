@@ -1,33 +1,37 @@
-import { prisma } from '@/lib/prisma';
-import { getSession } from '@/lib/auth/session';
-import { CreateCampaignWizard } from './create-campaign-wizard';
-import { CampaignCard } from './campaign-card';
+'use client';
 
-export default async function CampaignsPage() {
-  const session = await getSession();
-  const userId = session!.user.id;
+import React, { useEffect, useState } from 'react';
+import { fetchCampaignsData } from '@/lib/actions/dashboard';
+import { CreateCampaignWizard } from '../campaigns/create-campaign-wizard';
+import { CampaignCard } from '../campaigns/campaign-card';
 
-  const [campaigns, whatsappAccounts, templates, leads] = await Promise.all([
-    prisma.campaign.findMany({
-      where: { user_id: userId, deleted_at: null },
-      include: { template: { select: { name: true } } },
-      orderBy: { created_at: 'desc' },
-    }),
-    prisma.whatsappAccount.findMany({
-      where: { user_id: userId, is_active: true },
-    }),
-    prisma.template.findMany({
-      where: { user_id: userId, is_archived: false, deleted_at: null },
-      select: { id: true, name: true, body: true },
-      orderBy: { name: 'asc' },
-    }),
-    // Only eligible leads for selection
-    prisma.lead.findMany({
-      where: { user_id: userId, opt_in: true, unsubscribed: false, deleted_at: null },
-      select: { id: true, first_name: true, last_name: true, phone_number: true },
-      orderBy: { created_at: 'desc' },
-    }),
-  ]);
+type CampaignsData = {
+  campaigns: any[];
+  whatsappAccounts: any[];
+  templates: any[];
+  leads: any[];
+};
+
+export function CampaignsView() {
+  const [data, setData] = useState<CampaignsData | null>(null);
+
+  const loadData = () => {
+    fetchCampaignsData().then(setData).catch(console.error);
+  };
+
+  useEffect(() => {
+    loadData();
+  }, []);
+
+  if (!data) {
+    return (
+      <div className="flex items-center justify-center min-h-[300px]">
+        <div className="w-8 h-8 border-4 border-[var(--sys-color-roles-1-primary-roles-primary-color-role)] border-t-transparent rounded-full animate-spin"></div>
+      </div>
+    );
+  }
+
+  const { campaigns, whatsappAccounts, templates, leads } = data;
 
   const statusCounts = {
     total: campaigns.length,
@@ -37,22 +41,22 @@ export default async function CampaignsPage() {
   };
 
   return (
-    <div className="max-w-5xl mx-auto">
+    <div className="max-w-6xl mx-auto">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
         <div>
           <h1 className="text-2xl font-semibold text-[var(--sys-primitive-color-collection-1-color-palettes-neutral-neutral10)] tracking-tight">Campaigns</h1>
-          <p className="text-sm text-[var(--sys-primitive-color-collection-1-color-palettes-neutral-neutral50)] mt-1">Create and manage your outreach campaigns.</p>
+          <p className="text-sm text-[var(--sys-primitive-color-collection-1-color-palettes-neutral-neutral50)] mt-1">Broadcast templates to segmented contact lists.</p>
         </div>
-        <CreateCampaignWizard
-          whatsappAccounts={whatsappAccounts}
-          templates={templates}
+        <CreateCampaignWizard 
+          whatsappAccounts={whatsappAccounts} 
+          templates={templates} 
           leads={leads}
           hasNoWhatsappAccount={whatsappAccounts.length === 0}
+          onSuccess={loadData}
         />
       </div>
 
-      {/* Summary stats */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
+      <div className="grid grid-cols-1 sm:grid-cols-4 gap-4 mb-6">
         {[
           { label: 'Total', value: statusCounts.total, color: 'text-[var(--sys-primitive-color-collection-1-color-palettes-neutral-neutral10)]' },
           { label: 'Draft', value: statusCounts.draft, color: 'text-[var(--sys-primitive-color-collection-1-color-palettes-neutral-neutral40)]' },

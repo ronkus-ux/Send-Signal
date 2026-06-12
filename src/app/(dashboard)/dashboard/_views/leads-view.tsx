@@ -1,16 +1,29 @@
-import { prisma } from '@/lib/prisma';
-import { getSession } from '@/lib/auth/session';
-import { AddLeadModal } from './add-lead-modal';
-import { CsvImporter } from './csv-importer';
-import { LeadTable } from './lead-table';
+'use client';
 
-export default async function LeadsPage() {
-  const session = await getSession();
-  
-  const leads = await prisma.lead.findMany({
-    where: { user_id: session!.user.id },
-    orderBy: { created_at: 'desc' }
-  });
+import React, { useEffect, useState } from 'react';
+import { fetchLeadsData } from '@/lib/actions/dashboard';
+import { CsvImporter } from '../leads/csv-importer';
+import { AddLeadModal } from '../leads/add-lead-modal';
+import { LeadTable } from '../leads/lead-table';
+
+export function LeadsView() {
+  const [leads, setLeads] = useState<any[] | null>(null);
+
+  const loadData = () => {
+    fetchLeadsData().then(setLeads).catch(console.error);
+  };
+
+  useEffect(() => {
+    loadData();
+  }, []);
+
+  if (!leads) {
+    return (
+      <div className="flex items-center justify-center min-h-[300px]">
+        <div className="w-8 h-8 border-4 border-[var(--sys-color-roles-1-primary-roles-primary-color-role)] border-t-transparent rounded-full animate-spin"></div>
+      </div>
+    );
+  }
 
   return (
     <div className="max-w-6xl mx-auto">
@@ -21,8 +34,8 @@ export default async function LeadsPage() {
         </div>
         
         <div className="flex items-center gap-3">
-          <CsvImporter />
-          <AddLeadModal />
+          <CsvImporter onSuccess={loadData} />
+          <AddLeadModal onSuccess={loadData} />
         </div>
       </div>
 

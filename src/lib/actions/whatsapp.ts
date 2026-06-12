@@ -57,7 +57,7 @@ export async function connectWhatsappAccount(
       }
     });
 
-    revalidatePath('/dashboard/settings');
+    revalidatePath('/dashboard');
     return { message: 'SUCCESS' };
   } catch (error) {
     console.error('Failed to connect WhatsApp account:', error);
@@ -83,5 +83,5 @@ export async function deleteWhatsappAccount(accountId: string) {
     where: { id: accountId }
   });
 
-  revalidatePath('/dashboard/settings');
+  revalidatePath('/dashboard');
 }

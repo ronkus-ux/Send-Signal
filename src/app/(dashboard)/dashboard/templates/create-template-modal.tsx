@@ -13,7 +13,7 @@ const SAMPLE_LEAD = {
   email: 'alex@example.com',
 };
 
-export function CreateTemplateModal() {
+export function CreateTemplateModal({ onSuccess }: { onSuccess?: () => void }) {
   const [isOpen, setIsOpen] = useState(false);
   const [body, setBody] = useState('');
   const [state, formAction, isPending] = useActionState(createTemplate, {});
@@ -23,6 +23,7 @@ export function CreateTemplateModal() {
   if (state?.message === 'SUCCESS' && isOpen) {
     setIsOpen(false);
     setBody('');
+    onSuccess?.();
   }
 
   const insertPlaceholder = (key: string) => {

@@ -20,7 +20,7 @@ type Props = {
 
 const SAMPLE_LEAD = { first_name: 'Alex', last_name: 'Johnson', full_name: 'Alex Johnson', phone_number: '+1234567890', email: 'alex@example.com' };
 
-export function CreateCampaignWizard({ whatsappAccounts, templates, leads, hasNoWhatsappAccount = false }: Props) {
+export function CreateCampaignWizard({ whatsappAccounts, templates, leads, hasNoWhatsappAccount = false, onSuccess }: Props & { onSuccess?: () => void }) {
   const [isOpen, setIsOpen] = useState(false);
   const [step, setStep] = useState<Step>(1);
   const [selectedAccountId, setSelectedAccountId] = useState('');
@@ -64,6 +64,7 @@ export function CreateCampaignWizard({ whatsappAccounts, templates, leads, hasNo
 
   if (state?.message === 'SUCCESS' && isOpen) {
     reset();
+    onSuccess?.();
   }
 
   if (!isOpen) {

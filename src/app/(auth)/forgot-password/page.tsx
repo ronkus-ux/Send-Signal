@@ -92,7 +92,7 @@ export default function ForgotPasswordPage() {
       <div className="flex-1 flex items-center justify-center p-6">
         <div className={styles.loginContainer}>
           <div className={styles.loginCard}>
-            <div className={styles.loginHeader}>
+            <div className={`${styles.loginHeader} ${state.success ? styles.successHeader : ''}`}>
               <h1 className={styles.loginTitle}>
                 {state.success ? "Check your email" : "Reset password"}
               </h1>
@@ -103,7 +103,7 @@ export default function ForgotPasswordPage() {
             
             {state.success ? (
               <div className={styles.loginForm}>
-                <Link href="/login" className={styles.ctaButton} style={{ display: 'block', textAlign: 'center', textDecoration: 'none', marginTop: '16px' }}>
+                <Link href="/login" className={styles.ctaButton} style={{ display: 'block', textAlign: 'center', textDecoration: 'none' }}>
                   Return to Sign In
                 </Link>
               </div>

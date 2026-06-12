@@ -194,12 +194,16 @@ export default function OnboardingWizardClient({ user }: { user: UserProps }) {
 
     setCsvStep('IMPORTING');
 
-    const mappedLeads = csvData.map(row => ({
-      phone_number: String(row[mapping.phone_number]),
-      first_name: mapping.first_name ? String(row[mapping.first_name]) : undefined,
-      last_name: mapping.last_name ? String(row[mapping.last_name]) : undefined,
-      email: mapping.email ? String(row[mapping.email]) : undefined,
-    })).filter(lead => !!lead.phone_number);
+    const mappedLeads = csvData.map(row => {
+      const rawPhone = row[mapping.phone_number];
+      const phone = rawPhone ? String(rawPhone).replace(/[\s\-\(\)\.]/g, '') : '';
+      return {
+        phone_number: phone,
+        first_name: mapping.first_name ? String(row[mapping.first_name] ?? '') : undefined,
+        last_name: mapping.last_name ? String(row[mapping.last_name] ?? '') : undefined,
+        email: mapping.email ? String(row[mapping.email] ?? '') : undefined,
+      };
+    }).filter(lead => !!lead.phone_number);
 
     try {
       const result = await importLeads(mappedLeads);

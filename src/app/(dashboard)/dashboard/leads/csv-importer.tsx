@@ -7,7 +7,7 @@ import { importLeads } from '@/lib/actions/lead';
 
 type Step = 'UPLOAD' | 'MAP' | 'IMPORTING' | 'DONE';
 
-export function CsvImporter() {
+export function CsvImporter({ onSuccess }: { onSuccess?: () => void }) {
   const [isOpen, setIsOpen] = useState(false);
   const [step, setStep] = useState<Step>('UPLOAD');
   const [headers, setHeaders] = useState<string[]>([]);
@@ -56,17 +56,22 @@ export function CsvImporter() {
 
     setStep('IMPORTING');
 
-    const mappedLeads = data.map(row => ({
-      phone_number: row[mapping.phone_number],
-      first_name: mapping.first_name ? row[mapping.first_name] : undefined,
-      last_name: mapping.last_name ? row[mapping.last_name] : undefined,
-      email: mapping.email ? row[mapping.email] : undefined,
-    })).filter(lead => !!lead.phone_number);
+    const mappedLeads = data.map(row => {
+      const rawPhone = row[mapping.phone_number];
+      const phone = rawPhone ? String(rawPhone).replace(/[\s\-\(\)\.]/g, '') : '';
+      return {
+        phone_number: phone,
+        first_name: mapping.first_name ? (row[mapping.first_name] ? String(row[mapping.first_name]) : undefined) : undefined,
+        last_name: mapping.last_name ? (row[mapping.last_name] ? String(row[mapping.last_name]) : undefined) : undefined,
+        email: mapping.email ? (row[mapping.email] ? String(row[mapping.email]) : undefined) : undefined,
+      };
+    }).filter(lead => !!lead.phone_number);
 
     try {
       const result = await importLeads(mappedLeads);
       setImportResult(result);
       setStep('DONE');
+      onSuccess?.();
     } catch (error) {
       console.error(error);
       alert("Failed to import leads");

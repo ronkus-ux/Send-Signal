@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { decryptText } from '@/lib/auth/crypto';
+import { createHmac, timingSafeEqual } from 'crypto';
 
 const UNSUBSCRIBE_KEYWORDS = ['STOP', 'UNSUBSCRIBE', 'CANCEL', 'END', 'QUIT'];
 
@@ -47,11 +48,51 @@ export async function GET(req: NextRequest) {
  *   - Inbound messages: replies, unsubscribe keywords
  */
 export async function POST(req: NextRequest) {
+  const appSecret = process.env.WHATSAPP_APP_SECRET;
   let body: Record<string, unknown>;
-  try {
-    body = await req.json();
-  } catch {
-    return NextResponse.json({ error: 'Invalid JSON' }, { status: 400 });
+
+  if (appSecret) {
+    const signatureHeader = req.headers.get('x-hub-signature-256');
+    if (!signatureHeader) {
+      console.warn('Webhook warning: Missing x-hub-signature-256 header');
+      return NextResponse.json({ error: 'Missing signature' }, { status: 401 });
+    }
+
+    const rawBody = await req.text();
+    const signature = signatureHeader.startsWith('sha256=')
+      ? signatureHeader.slice(7)
+      : signatureHeader;
+
+    const hmac = createHmac('sha256', appSecret);
+    const digest = hmac.update(rawBody).digest('hex');
+
+    try {
+      const expectedBuffer = Buffer.from(signature, 'hex');
+      const actualBuffer = Buffer.from(digest, 'hex');
+
+      if (
+        expectedBuffer.length !== actualBuffer.length ||
+        !timingSafeEqual(expectedBuffer, actualBuffer)
+      ) {
+        console.warn('Webhook warning: Invalid signature');
+        return NextResponse.json({ error: 'Invalid signature' }, { status: 401 });
+      }
+    } catch (err) {
+      console.error('Webhook error during signature verification:', err);
+      return NextResponse.json({ error: 'Signature verification failed' }, { status: 401 });
+    }
+
+    try {
+      body = JSON.parse(rawBody);
+    } catch {
+      return NextResponse.json({ error: 'Invalid JSON' }, { status: 400 });
+    }
+  } else {
+    try {
+      body = await req.json();
+    } catch {
+      return NextResponse.json({ error: 'Invalid JSON' }, { status: 400 });
+    }
   }
 
   if (body?.object !== 'whatsapp_business_account') {
@@ -105,7 +146,7 @@ async function handleStatusUpdate(status: Record<string, unknown>) {
 
   const eventTime = timestamp ? new Date(parseInt(timestamp) * 1000) : new Date();
 
-  const updateData: Record<string, unknown> = {};
+  const updateData: Record<string, any> = {};
 
   switch (rawStatus.toLowerCase()) {
     case 'sent':
@@ -128,37 +169,70 @@ async function handleStatusUpdate(status: Record<string, unknown>) {
       return;
   }
 
-  await prisma.message.updateMany({
+  // Fetch message to get user_id, lead_id, and campaign_id
+  const msg = await prisma.message.findUnique({
     where: { whatsapp_message_id: whatsappMsgId },
+    select: { user_id: true, lead_id: true, campaign_id: true, id: true, status: true }
+  });
+
+  if (!msg) return;
+
+  // Update the message
+  await prisma.message.update({
+    where: { id: msg.id },
     data: updateData,
   });
 
-  // Fetch message to get user_id and lead_id for activity log
-  const msg = await prisma.message.findUnique({
-    where: { whatsapp_message_id: whatsappMsgId },
-    select: { user_id: true, lead_id: true, campaign_id: true, id: true }
-  });
+  // Increment campaign counters on transition
+  if (msg.campaign_id) {
+    const prevStatus = msg.status;
+    const newStatus = updateData.status;
 
-  if (msg) {
-    let eventType: 'MESSAGE_SENT' | 'MESSAGE_DELIVERED' | 'MESSAGE_READ' | 'MESSAGE_FAILED' | undefined;
-    if (updateData.status === 'SENT') eventType = 'MESSAGE_SENT';
-    if (updateData.status === 'DELIVERED') eventType = 'MESSAGE_DELIVERED';
-    if (updateData.status === 'READ') eventType = 'MESSAGE_READ';
-    if (updateData.status === 'FAILED') eventType = 'MESSAGE_FAILED';
-    
-    if (eventType) {
-      await prisma.activityLog.create({
-        data: {
-          user_id: msg.user_id,
-          lead_id: msg.lead_id,
-          campaign_id: msg.campaign_id,
-          message_id: msg.id,
-          event_type: eventType,
-          description: `Message status updated to ${updateData.status}`,
-          created_at: eventTime,
-        }
+    if (newStatus === 'SENT' && prevStatus === 'QUEUED') {
+      await prisma.campaign.update({
+        where: { id: msg.campaign_id },
+        data: { total_sent: { increment: 1 } }
+      });
+    } else if (newStatus === 'DELIVERED' && prevStatus !== 'DELIVERED' && prevStatus !== 'READ' && prevStatus !== 'REPLIED') {
+      await prisma.campaign.update({
+        where: { id: msg.campaign_id },
+        data: { total_delivered: { increment: 1 } }
+      });
+    } else if (newStatus === 'READ' && prevStatus !== 'READ' && prevStatus !== 'REPLIED') {
+      const incrementData: Record<string, any> = { total_read: { increment: 1 } };
+      if (prevStatus !== 'DELIVERED') {
+        incrementData.total_delivered = { increment: 1 };
+      }
+      await prisma.campaign.update({
+        where: { id: msg.campaign_id },
+        data: incrementData
+      });
+    } else if (newStatus === 'FAILED' && prevStatus !== 'FAILED') {
+      await prisma.campaign.update({
+        where: { id: msg.campaign_id },
+        data: { total_failed: { increment: 1 } }
       });
     }
+  }
+
+  let eventType: 'MESSAGE_SENT' | 'MESSAGE_DELIVERED' | 'MESSAGE_READ' | 'MESSAGE_FAILED' | undefined;
+  if (updateData.status === 'SENT') eventType = 'MESSAGE_SENT';
+  if (updateData.status === 'DELIVERED') eventType = 'MESSAGE_DELIVERED';
+  if (updateData.status === 'READ') eventType = 'MESSAGE_READ';
+  if (updateData.status === 'FAILED') eventType = 'MESSAGE_FAILED';
+  
+  if (eventType) {
+    await prisma.activityLog.create({
+      data: {
+        user_id: msg.user_id,
+        lead_id: msg.lead_id,
+        campaign_id: msg.campaign_id,
+        message_id: msg.id,
+        event_type: eventType,
+        description: `Message status updated to ${updateData.status}`,
+        created_at: eventTime,
+      }
+    });
   }
 }
 
@@ -202,10 +276,26 @@ async function handleInboundMessage(
     });
 
     // Also mark any related outbound message as UNSUBSCRIBED
-    await prisma.message.updateMany({
+    const unsubOutbound = await prisma.message.findMany({
       where: { lead_id: lead.id, status: { in: ['SENT', 'DELIVERED', 'READ'] } },
-      data: { status: 'UNSUBSCRIBED' },
+      select: { id: true, campaign_id: true },
     });
+
+    if (unsubOutbound.length > 0) {
+      await prisma.message.updateMany({
+        where: { id: { in: unsubOutbound.map(m => m.id) } },
+        data: { status: 'UNSUBSCRIBED' },
+      });
+
+      for (const msg of unsubOutbound) {
+        if (msg.campaign_id) {
+          await prisma.campaign.update({
+            where: { id: msg.campaign_id },
+            data: { total_unsubscribed: { increment: 1 } },
+          });
+        }
+      }
+    }
 
     await prisma.activityLog.create({
       data: {
@@ -217,15 +307,37 @@ async function handleInboundMessage(
       }
     });
   } else {
-    // Mark the outbound message as REPLIED if not already
-    await prisma.message.updateMany({
+    // Find outbound messages that are about to be marked as REPLIED
+    const outboundMessages = await prisma.message.findMany({
       where: {
         lead_id: lead.id,
         whatsapp_account_id: whatsappAccountId,
         status: { in: ['SENT', 'DELIVERED', 'READ'] },
         direction: 'OUTBOUND',
       },
-      data: { status: 'REPLIED', replied_at: receivedAt },
+      select: { id: true, campaign_id: true, status: true },
+    });
+
+    if (outboundMessages.length > 0) {
+      await prisma.message.updateMany({
+        where: { id: { in: outboundMessages.map(m => m.id) } },
+        data: { status: 'REPLIED', replied_at: receivedAt },
+      });
+
+      for (const msg of outboundMessages) {
+        if (msg.campaign_id) {
+          await prisma.campaign.update({
+            where: { id: msg.campaign_id },
+            data: { total_replied: { increment: 1 } },
+          });
+        }
+      }
+    }
+
+    // Update lead status to REPLIED
+    await prisma.lead.update({
+      where: { id: lead.id },
+      data: { status: 'REPLIED' },
     });
 
     await prisma.activityLog.create({

@@ -1,12 +1,40 @@
-import { getDashboardAnalytics, getRecentCampaignsAnalytics } from '@/lib/actions/analytics';
-import { BarChart2, CheckCircle2, MessageSquare, Send } from 'lucide-react';
-import Link from 'next/link';
+'use client';
 
-export default async function AnalyticsPage() {
-  const [metrics, recentCampaigns] = await Promise.all([
-    getDashboardAnalytics(),
-    getRecentCampaignsAnalytics(),
-  ]);
+import React, { useEffect, useState } from 'react';
+import { BarChart2, CheckCircle2, MessageSquare, Send } from 'lucide-react';
+import { useDashboardView } from '../../_components/view-context';
+import { fetchAnalyticsData } from '@/lib/actions/dashboard';
+
+type AnalyticsData = {
+  metrics: {
+    totalCampaigns: number;
+    totalSent: number;
+    totalDelivered: number;
+    deliveryRate: number;
+    totalReplied: number;
+    replyRate: number;
+    totalConverted: number;
+  };
+  recentCampaigns: any[];
+};
+
+export function AnalyticsView() {
+  const { setView } = useDashboardView();
+  const [data, setData] = useState<AnalyticsData | null>(null);
+
+  useEffect(() => {
+    fetchAnalyticsData().then(setData).catch(console.error);
+  }, []);
+
+  if (!data) {
+    return (
+      <div className="flex items-center justify-center min-h-[300px]">
+        <div className="w-8 h-8 border-4 border-[var(--sys-color-roles-1-primary-roles-primary-color-role)] border-t-transparent rounded-full animate-spin"></div>
+      </div>
+    );
+  }
+
+  const { metrics, recentCampaigns } = data;
 
   if (metrics.totalCampaigns === 0) {
     return (
@@ -20,12 +48,12 @@ export default async function AnalyticsPage() {
           <p className="mt-2 text-sm text-gray-500 max-w-sm text-center">
             Your analytics dashboard will populate automatically once you create and run your first WhatsApp campaign.
           </p>
-          <Link 
-            href="/dashboard/campaigns"
-            className="mt-6 px-4 py-2 bg-[var(--sys-color-roles-1-primary-roles-primary-color-role)] text-white rounded-lg hover:opacity-90 font-medium transition-opacity"
+          <button 
+            onClick={() => setView('campaigns')}
+            className="mt-6 px-4 py-2 bg-[var(--sys-color-roles-1-primary-roles-primary-color-role)] text-white rounded-lg hover:opacity-90 font-medium transition-opacity cursor-pointer border-none"
           >
             Create a Campaign
-          </Link>
+          </button>
         </div>
       </div>
     );
@@ -105,9 +133,12 @@ export default async function AnalyticsPage() {
       <div className="bg-white rounded-xl shadow-sm border border-[var(--sys-primitive-color-collection-1-color-palettes-neutral-neutral90)] overflow-hidden">
         <div className="p-5 border-b border-[var(--sys-primitive-color-collection-1-color-palettes-neutral-neutral90)] flex justify-between items-center bg-gray-50/50">
           <h2 className="text-lg font-semibold text-gray-900">Recent Campaigns</h2>
-          <Link href="/dashboard/campaigns" className="text-sm font-medium text-[var(--sys-color-roles-1-primary-roles-primary-color-role)] hover:underline">
+          <button 
+            onClick={() => setView('campaigns')} 
+            className="text-sm font-medium text-[var(--sys-color-roles-1-primary-roles-primary-color-role)] hover:underline bg-transparent border-none cursor-pointer"
+          >
             View All
-          </Link>
+          </button>
         </div>
         <div className="overflow-x-auto">
           <table className="w-full text-left text-sm whitespace-nowrap">

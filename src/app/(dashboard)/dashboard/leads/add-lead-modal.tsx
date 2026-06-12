@@ -4,12 +4,13 @@ import { useActionState, useState } from 'react';
 import { addLead } from '@/lib/actions/lead';
 import { Plus } from 'lucide-react';
 
-export function AddLeadModal() {
+export function AddLeadModal({ onSuccess }: { onSuccess?: () => void }) {
   const [isOpen, setIsOpen] = useState(false);
   const [state, formAction, isPending] = useActionState(addLead, {});
 
   if (state?.message === 'SUCCESS' && isOpen) {
     setIsOpen(false);
+    onSuccess?.();
   }
 
   if (!isOpen) {

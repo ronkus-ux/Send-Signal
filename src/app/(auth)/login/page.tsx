@@ -62,7 +62,10 @@ export default function LoginPage() {
               </div>
               
               <div className={styles.formGroup}>
-                <label htmlFor="password" className={styles.formLabel}>Password</label>
+                <div className={styles.formLabelRow}>
+                  <label htmlFor="password" className={styles.formLabel}>Password</label>
+                  <Link href="/forgot-password" className={styles.forgotPassword}>Forgot password?</Link>
+                </div>
                 <div className="relative flex items-center w-full">
                   <input 
                     type={showPassword ? "text" : "password"} 
@@ -83,14 +86,6 @@ export default function LoginPage() {
                 {displayPasswordError && (
                   <p className={styles.formError}>{displayPasswordError}</p>
                 )}
-              </div>
-              
-              <div className={styles.formOptions}>
-                <label className={styles.rememberMe}>
-                  <input type="checkbox" className={styles.checkboxInput} />
-                  <span className={styles.checkboxLabel}>Remember for 30 days</span>
-                </label>
-                <Link href="/forgot-password" className={styles.forgotPassword}>Forgot password?</Link>
               </div>
 
               {state.message && (

@@ -38,7 +38,7 @@ function CopyButton({ text }: { text: string }) {
   );
 }
 
-export function WhatsappAccountList({ accounts }: { accounts: WhatsappAccount[] }) {
+export function WhatsappAccountList({ accounts, onSuccess }: { accounts: WhatsappAccount[], onSuccess?: () => void }) {
   const [isPending, startTransition] = useTransition();
 
   if (accounts.length === 0) {
@@ -69,8 +69,13 @@ export function WhatsappAccountList({ accounts }: { accounts: WhatsappAccount[] 
             <button 
               onClick={() => {
                 if (confirm('Are you sure you want to disconnect this account?')) {
-                  startTransition(() => {
-                    deleteWhatsappAccount(account.id);
+                  startTransition(async () => {
+                    try {
+                      await deleteWhatsappAccount(account.id);
+                      onSuccess?.();
+                    } catch (err) {
+                      console.error('Failed to delete whatsapp account:', err);
+                    }
                   });
                 }
               }}
