@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect, useMemo } from 'react';
 import { sendManualReply } from '@/lib/actions/conversation';
-import { Send, User } from 'lucide-react';
+import { Send, User, MessageSquare } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 
 type Lead = { first_name?: string | null; last_name?: string | null; phone_number: string };
@@ -98,15 +98,22 @@ export function InboxClient({
 
   if (conversations.length === 0) {
     return (
-      <div className="bg-white rounded-xl shadow-sm border border-[var(--sys-primitive-color-collection-1-color-palettes-neutral-neutral90)] p-12 flex flex-col items-center justify-center min-h-[500px]">
-        <h3 className="mt-2 text-sm font-semibold text-gray-900">No conversations yet</h3>
-        <p className="mt-1 text-sm text-gray-500">When leads reply to your campaigns, they will appear here.</p>
+      <div className="bg-white rounded-xl border border-[var(--sys-primitive-color-collection-1-color-palettes-neutral-neutral90)] py-20 px-6 text-center flex flex-col items-center justify-center min-h-[400px]">
+        <div className="w-16 h-16 rounded-full bg-[var(--sys-primitive-color-collection-1-color-palettes-neutral-neutral95)] flex items-center justify-center text-[var(--sys-primitive-color-collection-1-color-palettes-neutral-neutral40)] mb-5">
+          <MessageSquare className="w-7 h-7" />
+        </div>
+        <h3 className="title-medium text-[var(--sys-primitive-color-collection-1-color-palettes-neutral-neutral10)] font-semibold">
+          Conversations Coming Soon
+        </h3>
+        <p className="body-large text-[var(--sys-primitive-color-collection-1-color-palettes-neutral-neutral50)] mt-2 max-w-md">
+          A dedicated inbox for handling inbound replies to your campaigns is under development.
+        </p>
       </div>
     );
   }
 
   return (
-    <div className="flex h-[calc(100vh-10rem)] bg-white rounded-xl shadow-sm border border-[var(--sys-primitive-color-collection-1-color-palettes-neutral-neutral90)] overflow-hidden">
+    <div className="flex h-[calc(100vh-10rem)] bg-white rounded-xl border border-[var(--sys-primitive-color-collection-1-color-palettes-neutral-neutral90)] overflow-hidden">
       {/* Sidebar */}
       <div className="w-1/3 border-r border-[var(--sys-primitive-color-collection-1-color-palettes-neutral-neutral90)] flex flex-col">
         <div className="p-4 border-b border-[var(--sys-primitive-color-collection-1-color-palettes-neutral-neutral90)] bg-gray-50">
@@ -141,7 +148,7 @@ export function InboxClient({
       {activeId ? (
         <div className="flex-1 flex flex-col bg-[#efeae2]">
           {/* Header */}
-          <div className="p-4 bg-white border-b border-[var(--sys-primitive-color-collection-1-color-palettes-neutral-neutral90)] flex items-center shadow-sm z-10">
+          <div className="p-4 bg-white border-b border-[var(--sys-primitive-color-collection-1-color-palettes-neutral-neutral90)] flex items-center z-10">
             <div className="w-10 h-10 bg-gray-200 rounded-full flex items-center justify-center mr-3 text-gray-500">
               <User size={20} />
             </div>

@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useTransition } from 'react';
 import { logoutUser } from '@/lib/actions/auth';
+import { LogOut, X } from 'lucide-react';
 
 type User = { company_name?: string | null; role?: string | null };
 
@@ -27,7 +28,7 @@ export function Header({ user }: { user: User }) {
 
   return (
     <>
-      <header className="h-16 flex items-center justify-between border-b border-[var(--sys-primitive-color-collection-1-color-palettes-neutral-neutral90)] bg-white sticky top-0 z-10 px-6 md:px-8">
+      <header className="h-14 flex items-center justify-between border-b border-[var(--sys-primitive-color-collection-1-color-palettes-neutral-neutral95)] bg-white sticky top-0 z-10 px-4 md:px-6">
         <div className="flex items-center">
           {/* Left side empty space to match spacing */}
         </div>
@@ -47,17 +48,25 @@ export function Header({ user }: { user: User }) {
             </button>
             
             {isDropdownOpen && (
-              <div className="absolute right-0 top-11 mt-1.5 w-48 bg-white border border-[var(--sys-primitive-color-collection-1-color-palettes-neutral-neutral90)] rounded-lg shadow-lg py-1.5 z-20">
-                <button
-                  onClick={() => {
-                    setIsDropdownOpen(false);
-                    setIsLogoutConfirmOpen(true);
-                  }}
-                  className="w-full text-left px-4 py-2 text-sm text-[var(--sys-primitive-color-collection-1-color-palettes-neutral-neutral10)] hover:bg-[var(--sys-primitive-color-collection-1-color-palettes-neutral-neutral95)] transition-colors border-none bg-transparent cursor-pointer"
-                >
-                  Logout
-                </button>
-              </div>
+              <>
+                {/* Backdrop overlay */}
+                <div 
+                  className="fixed inset-0 bg-black/15 backdrop-blur-[1px] cursor-default z-30"
+                  onClick={() => setIsDropdownOpen(false)}
+                />
+                <div className="absolute right-0 top-11 mt-1.5 w-48 bg-white border border-[var(--sys-primitive-color-collection-1-color-palettes-neutral-neutral90)] rounded-lg shadow-lg py-1.5 z-40">
+                  <button
+                    onClick={() => {
+                      setIsDropdownOpen(false);
+                      setIsLogoutConfirmOpen(true);
+                    }}
+                    className="w-full flex items-center gap-2 px-4 py-2 label-medium text-[var(--sys-primitive-color-collection-1-color-palettes-neutral-neutral10)] hover:bg-[var(--sys-primitive-color-collection-1-color-palettes-neutral-neutral95)] transition-colors border-none bg-transparent cursor-pointer text-left focus:outline-none"
+                  >
+                    <LogOut className="w-3.5 h-3.5" />
+                    <span>Log out</span>
+                  </button>
+                </div>
+              </>
             )}
           </div>
         </div>
@@ -66,18 +75,25 @@ export function Header({ user }: { user: User }) {
       {/* Confirmation Modal */}
       {isLogoutConfirmOpen && (
         <div className="fixed inset-0 bg-black/40 backdrop-blur-xs flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-xl shadow-xl p-6 max-w-sm w-full border border-[var(--sys-primitive-color-collection-1-color-palettes-neutral-neutral90)] animate-in fade-in zoom-in-95 duration-150">
-            <h3 className="text-lg font-semibold text-[var(--sys-primitive-color-collection-1-color-palettes-neutral-neutral10)]">
+          <div className="bg-white rounded-xl shadow-xl p-5 max-w-[340px] w-full border border-[var(--sys-primitive-color-collection-1-color-palettes-neutral-neutral90)] animate-in fade-in zoom-in-95 duration-150 relative">
+            <button
+              onClick={() => setIsLogoutConfirmOpen(false)}
+              className="absolute top-4 right-4 text-[var(--sys-primitive-color-collection-1-color-palettes-neutral-neutral50)] hover:text-[var(--sys-primitive-color-collection-1-color-palettes-neutral-neutral10)] p-1 rounded-full hover:bg-neutral-100 transition-colors border-none bg-transparent cursor-pointer flex items-center justify-center focus:outline-none"
+              aria-label="Close"
+            >
+              <X className="w-4 h-4" />
+            </button>
+            <h3 className="title-medium text-[var(--sys-primitive-color-collection-1-color-palettes-neutral-neutral10)]">
               Confirm Logout
             </h3>
-            <p className="mt-2 text-sm text-[var(--sys-primitive-color-collection-1-color-palettes-neutral-neutral50)]">
-              Are you sure you want to log out of Send Signal?
+            <p className="mt-2 label-large text-[var(--sys-primitive-color-collection-1-color-palettes-neutral-neutral50)]">
+              Are you sure you want to log out of your account?
             </p>
-            <div className="mt-6 flex justify-end gap-3">
+            <div className="mt-6 flex justify-end gap-2">
               <button
                 onClick={() => setIsLogoutConfirmOpen(false)}
                 disabled={isPending}
-                className="px-4 py-2 border border-[var(--sys-primitive-color-collection-1-color-palettes-neutral-neutral80)] bg-white text-sm font-medium text-[var(--sys-primitive-color-collection-1-color-palettes-neutral-neutral30)] rounded-lg hover:bg-neutral-50 transition-colors cursor-pointer disabled:opacity-50"
+                className="px-4 py-2 bg-transparent border-none text-[var(--sys-primitive-color-collection-1-color-palettes-neutral-neutral30)] label-large rounded-lg hover:bg-[var(--sys-primitive-color-collection-1-color-palettes-neutral-neutral95)] transition-colors cursor-pointer disabled:opacity-50"
               >
                 Cancel
               </button>
@@ -88,9 +104,9 @@ export function Header({ user }: { user: User }) {
                   });
                 }}
                 disabled={isPending}
-                className="px-4 py-2 bg-red-600 text-sm font-medium text-white rounded-lg hover:bg-red-700 transition-colors cursor-pointer disabled:opacity-50"
+                className="px-4 py-2 bg-red-600 text-white label-large rounded-lg hover:bg-red-700 transition-colors cursor-pointer disabled:opacity-50"
               >
-                {isPending ? 'Logging out...' : 'Yes, Logout'}
+                {isPending ? 'Logging out...' : 'Yes, log out'}
               </button>
             </div>
           </div>

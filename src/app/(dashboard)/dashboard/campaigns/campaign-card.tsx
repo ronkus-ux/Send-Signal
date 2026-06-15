@@ -31,7 +31,7 @@ export function CampaignCard({ campaign, hasNoWhatsappAccount = false }: { campa
   const [isPending, startTransition] = useTransition();
 
   return (
-    <div className="bg-white rounded-xl border border-[var(--sys-primitive-color-collection-1-color-palettes-neutral-neutral90)] shadow-sm overflow-hidden">
+    <div className="bg-white rounded-xl border border-[var(--sys-primitive-color-collection-1-color-palettes-neutral-neutral90)] overflow-hidden">
       <div className="px-5 py-4 flex items-start justify-between gap-4">
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 flex-wrap">

@@ -22,8 +22,8 @@ export function ConversationsView() {
   return (
     <div className="max-w-7xl mx-auto h-full flex flex-col">
       <div className="mb-4">
-        <h1 className="text-2xl font-semibold text-[var(--sys-primitive-color-collection-1-color-palettes-neutral-neutral10)] tracking-tight">Inbox</h1>
-        <p className="text-sm text-[var(--sys-primitive-color-collection-1-color-palettes-neutral-neutral50)] mt-1">Manage replies and send manual follow-ups to your leads.</p>
+        <h1 className="title-large text-[var(--sys-primitive-color-collection-1-color-palettes-neutral-neutral10)]">Conversations</h1>
+        <p className="body-large text-[var(--sys-primitive-color-collection-1-color-palettes-neutral-neutral50)] mt-1">Manage one-on-one chats with your leads.</p>
       </div>
       
       <InboxClient 

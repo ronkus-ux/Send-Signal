@@ -140,3 +140,42 @@ export async function fetchSettingsData() {
     accounts: decryptedAccounts
   };
 }
+
+export async function updateProfileSettings(formData: { company_name: string; email: string }) {
+  const session = await getSession();
+  if (!session?.user) throw new Error('Unauthorized');
+  const userId = session.user.id;
+
+  if (!formData.company_name.trim()) {
+    return { success: false, error: 'Company Name cannot be empty' };
+  }
+  if (!formData.email.trim()) {
+    return { success: false, error: 'Email Address cannot be empty' };
+  }
+
+  try {
+    const existingUser = await prisma.user.findFirst({
+      where: {
+        email: formData.email,
+        id: { not: userId }
+      }
+    });
+
+    if (existingUser) {
+      return { success: false, error: 'Email is already in use by another account' };
+    }
+
+    await prisma.user.update({
+      where: { id: userId },
+      data: {
+        company_name: formData.company_name,
+        email: formData.email
+      }
+    });
+
+    return { success: true };
+  } catch (err: any) {
+    console.error('Failed to update profile settings:', err);
+    return { success: false, error: err.message || 'Failed to update profile settings' };
+  }
+}

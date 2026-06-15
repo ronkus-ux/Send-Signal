@@ -1,6 +1,6 @@
 'use client';
 
-import { Trash2, Copy, Check } from 'lucide-react';
+import { Trash2, Copy, Check, Smartphone } from 'lucide-react';
 import { useTransition, useState } from 'react';
 import { deleteWhatsappAccount } from '@/lib/actions/whatsapp';
 
@@ -43,8 +43,13 @@ export function WhatsappAccountList({ accounts, onSuccess }: { accounts: Whatsap
 
   if (accounts.length === 0) {
     return (
-      <div className="text-sm text-[var(--sys-primitive-color-collection-1-color-palettes-neutral-neutral50)] py-4">
-        No WhatsApp accounts connected yet.
+      <div className="bg-[var(--sys-primitive-color-collection-1-color-palettes-neutral-neutral98)]/50 rounded-xl border border-[var(--sys-primitive-color-collection-1-color-palettes-neutral-neutral90)] py-12 px-4 text-center flex flex-col items-center justify-center mt-2">
+        <div className="w-14 h-14 rounded-full bg-[var(--sys-primitive-color-collection-1-color-palettes-neutral-neutral95)] flex items-center justify-center text-[var(--sys-primitive-color-collection-1-color-palettes-neutral-neutral40)] mb-3">
+          <Smartphone className="w-6 h-6" />
+        </div>
+        <p className="body-large text-[var(--sys-primitive-color-collection-1-color-palettes-neutral-neutral50)] max-w-sm">
+          No WhatsApp accounts connected yet.
+        </p>
       </div>
     );
   }

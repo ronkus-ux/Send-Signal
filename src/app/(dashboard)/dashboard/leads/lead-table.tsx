@@ -1,9 +1,10 @@
 'use client';
 
 import { useState, useTransition, useEffect } from 'react';
-import { Trash2, X, Activity } from 'lucide-react';
+import { Trash2, X, Activity, Users } from 'lucide-react';
 import { deleteLead } from '@/lib/actions/lead';
 import { getLeadActivity } from '@/lib/actions/activity';
+import { CsvImporter } from './csv-importer';
 
 type Lead = {
   id: string;
@@ -22,11 +23,12 @@ type ActivityLog = {
   campaign?: { name: string } | null;
 };
 
-export function LeadTable({ leads }: { leads: Lead[] }) {
+export function LeadTable({ leads, onImportSuccess }: { leads: Lead[]; onImportSuccess?: () => void }) {
   const [isPending, startTransition] = useTransition();
   const [selectedLead, setSelectedLead] = useState<Lead | null>(null);
   const [activities, setActivities] = useState<ActivityLog[]>([]);
   const [isLoadingActivity, setIsLoadingActivity] = useState(false);
+  const [isImportOpen, setIsImportOpen] = useState(false);
 
   useEffect(() => {
     if (selectedLead) {
@@ -43,9 +45,23 @@ export function LeadTable({ leads }: { leads: Lead[] }) {
 
   if (leads.length === 0) {
     return (
-      <div className="bg-white rounded-xl border border-[var(--sys-primitive-color-collection-1-color-palettes-neutral-neutral90)] p-12 text-center">
-        <h3 className="text-lg font-medium text-[var(--sys-primitive-color-collection-1-color-palettes-neutral-neutral10)]">No leads found</h3>
-        <p className="text-sm text-[var(--sys-primitive-color-collection-1-color-palettes-neutral-neutral50)] mt-1">Get started by adding a lead manually or importing a CSV.</p>
+      <div className="bg-white rounded-xl border border-[var(--sys-primitive-color-collection-1-color-palettes-neutral-neutral90)] py-20 px-6 text-center flex flex-col items-center justify-center">
+        <div className="w-16 h-16 rounded-full bg-[var(--sys-primitive-color-collection-1-color-palettes-neutral-neutral95)] flex items-center justify-center text-[var(--sys-primitive-color-collection-1-color-palettes-neutral-neutral40)] mb-5">
+          <Users className="w-7 h-7" />
+        </div>
+        <h3 className="title-medium text-[var(--sys-primitive-color-collection-1-color-palettes-neutral-neutral10)] font-semibold">
+          No leads found
+        </h3>
+        <p className="body-large text-[var(--sys-primitive-color-collection-1-color-palettes-neutral-neutral50)] mt-2 max-w-md">
+          You haven&apos;t added any leads yet. Import a CSV to get started with your campaigns.
+        </p>
+        <button
+          onClick={() => setIsImportOpen(true)}
+          className="mt-6 px-6 py-2.5 bg-[var(--sys-color-roles-1-primary-roles-primary-color-role)] hover:bg-[var(--sys-primitive-color-collection-1-color-palettes-primary-primary60)] text-white rounded-md label-large shadow-sm cursor-pointer border-none font-medium transition-colors"
+        >
+          Import Leads
+        </button>
+        <CsvImporter isOpen={isImportOpen} onClose={() => setIsImportOpen(false)} onSuccess={onImportSuccess} />
       </div>
     );
   }
@@ -67,7 +83,7 @@ export function LeadTable({ leads }: { leads: Lead[] }) {
 
   return (
     <>
-      <div className="bg-white rounded-xl shadow-sm border border-[var(--sys-primitive-color-collection-1-color-palettes-neutral-neutral90)] overflow-hidden">
+      <div className="bg-white rounded-xl border border-[var(--sys-primitive-color-collection-1-color-palettes-neutral-neutral90)] overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-left text-sm whitespace-nowrap">
             <thead className="bg-[var(--sys-primitive-color-collection-1-color-palettes-neutral-neutral98)] border-b border-[var(--sys-primitive-color-collection-1-color-palettes-neutral-neutral90)]">
@@ -133,7 +149,7 @@ export function LeadTable({ leads }: { leads: Lead[] }) {
       {/* Slide-out Panel */}
       {selectedLead && (
         <div className="fixed inset-0 z-50 overflow-hidden bg-black/20" onClick={() => setSelectedLead(null)}>
-          <div className="absolute inset-y-0 right-0 max-w-md w-full bg-white shadow-xl flex flex-col animate-in slide-in-from-right" onClick={e => e.stopPropagation()}>
+          <div className="absolute inset-y-0 right-0 max-w-md w-full bg-white border-l border-[var(--sys-primitive-color-collection-1-color-palettes-neutral-neutral90)] flex flex-col animate-in slide-in-from-right" onClick={e => e.stopPropagation()}>
             <div className="p-6 border-b border-[var(--sys-primitive-color-collection-1-color-palettes-neutral-neutral90)] flex justify-between items-center">
               <div>
                 <h2 className="text-lg font-medium text-gray-900">

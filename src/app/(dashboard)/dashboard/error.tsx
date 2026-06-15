@@ -14,7 +14,7 @@ export default function DashboardError({
   }, [error]);
 
   return (
-    <div className="max-w-2xl mx-auto my-12 p-8 bg-white rounded-xl border border-[var(--sys-primitive-color-collection-1-color-palettes-neutral-neutral90)] shadow-sm text-center space-y-6">
+    <div className="max-w-2xl mx-auto my-12 p-8 bg-white rounded-xl border border-[var(--sys-primitive-color-collection-1-color-palettes-neutral-neutral90)] text-center space-y-6">
       <div className="w-16 h-16 bg-red-50 text-red-600 rounded-full flex items-center justify-center mx-auto">
         <svg
           className="w-8 h-8"
@@ -48,13 +48,13 @@ export default function DashboardError({
       <div className="flex justify-center gap-4">
         <button
           onClick={() => (window.location.href = '/dashboard')}
-          className="px-4 py-2 text-sm font-medium border border-[var(--sys-primitive-color-collection-1-color-palettes-neutral-neutral80)] bg-white hover:bg-neutral-50 text-[var(--sys-primitive-color-collection-1-color-palettes-neutral-neutral10)] rounded-lg transition-all shadow-sm"
+          className="px-4 py-2 border border-[var(--sys-primitive-color-collection-1-color-palettes-neutral-neutral80)] bg-white hover:bg-neutral-50 text-[var(--sys-primitive-color-collection-1-color-palettes-neutral-neutral10)] rounded-lg transition-all shadow-sm label-large"
         >
           Go to Overview
         </button>
         <button
           onClick={() => reset()}
-          className="px-6 py-2 text-sm font-medium bg-[var(--sys-color-roles-1-primary-roles-primary-color-role)] hover:bg-[var(--sys-primitive-color-collection-1-color-palettes-primary-primary60)] text-white rounded-lg transition-all shadow-sm"
+          className="px-6 py-2 bg-[var(--sys-color-roles-1-primary-roles-primary-color-role)] hover:bg-[var(--sys-primitive-color-collection-1-color-palettes-primary-primary60)] text-white rounded-lg transition-all shadow-sm label-large"
         >
           Try Again
         </button>

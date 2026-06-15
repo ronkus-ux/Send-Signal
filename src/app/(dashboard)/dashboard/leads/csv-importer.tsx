@@ -7,8 +7,17 @@ import { importLeads } from '@/lib/actions/lead';
 
 type Step = 'UPLOAD' | 'MAP' | 'IMPORTING' | 'DONE';
 
-export function CsvImporter({ onSuccess }: { onSuccess?: () => void }) {
-  const [isOpen, setIsOpen] = useState(false);
+export function CsvImporter({ 
+  onSuccess,
+  isOpen: propIsOpen,
+  onClose: propOnClose
+}: { 
+  onSuccess?: () => void;
+  isOpen?: boolean;
+  onClose?: () => void;
+}) {
+  const [internalIsOpen, setInternalIsOpen] = useState(false);
+  const isOpen = propIsOpen !== undefined ? propIsOpen : internalIsOpen;
   const [step, setStep] = useState<Step>('UPLOAD');
   const [headers, setHeaders] = useState<string[]>([]);
   const [data, setData] = useState<Record<string, any>[]>([]);
@@ -80,18 +89,22 @@ export function CsvImporter({ onSuccess }: { onSuccess?: () => void }) {
   };
 
   const reset = () => {
-    setIsOpen(false);
+    if (propOnClose) {
+      propOnClose();
+    } else {
+      setInternalIsOpen(false);
+    }
     setStep('UPLOAD');
     setHeaders([]);
     setData([]);
     setImportResult(null);
   };
 
-  if (!isOpen) {
+  if (propIsOpen === undefined && !internalIsOpen) {
     return (
       <button 
-        onClick={() => setIsOpen(true)}
-        className="flex items-center gap-2 rounded-md bg-white border border-[var(--sys-primitive-color-collection-1-color-palettes-neutral-neutral80)] px-4 py-2 text-sm font-medium text-[var(--sys-primitive-color-collection-1-color-palettes-neutral-neutral20)] shadow-sm hover:bg-[var(--sys-primitive-color-collection-1-color-palettes-neutral-neutral98)] transition-colors"
+        onClick={() => setInternalIsOpen(true)}
+        className="flex items-center gap-2 rounded-md bg-white border border-[var(--sys-primitive-color-collection-1-color-palettes-neutral-neutral80)] px-4 py-2 text-[var(--sys-primitive-color-collection-1-color-palettes-neutral-neutral20)] shadow-sm hover:bg-[var(--sys-primitive-color-collection-1-color-palettes-neutral-neutral98)] transition-colors label-large"
       >
         <Upload className="w-4 h-4" />
         Import CSV
@@ -99,11 +112,13 @@ export function CsvImporter({ onSuccess }: { onSuccess?: () => void }) {
     );
   }
 
+  if (!isOpen) return null;
+
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-xl shadow-xl w-full max-w-lg border border-[var(--sys-primitive-color-collection-1-color-palettes-neutral-neutral90)] overflow-hidden">
-        <div className="flex items-center justify-between p-6 border-b border-[var(--sys-primitive-color-collection-1-color-palettes-neutral-neutral90)]">
-          <h3 className="text-lg font-medium text-[var(--sys-primitive-color-collection-1-color-palettes-neutral-neutral10)]">Import Leads via CSV</h3>
+      <div className="bg-white rounded-xl w-full max-w-lg border border-[var(--sys-primitive-color-collection-1-color-palettes-neutral-neutral90)] overflow-hidden">
+        <div className="flex items-center justify-between px-6 py-4 border-b border-[var(--sys-primitive-color-collection-1-color-palettes-neutral-neutral90)]">
+          <h3 className="title-medium text-[var(--sys-primitive-color-collection-1-color-palettes-neutral-neutral10)]">Import Leads via CSV</h3>
           <button onClick={reset} className="text-[var(--sys-primitive-color-collection-1-color-palettes-neutral-neutral50)] hover:text-[var(--sys-primitive-color-collection-1-color-palettes-neutral-neutral10)]">
             <X className="w-5 h-5" />
           </button>
@@ -156,14 +171,14 @@ export function CsvImporter({ onSuccess }: { onSuccess?: () => void }) {
               <div className="flex justify-end gap-3 pt-4 border-t border-[var(--sys-primitive-color-collection-1-color-palettes-neutral-neutral90)]">
                 <button 
                   onClick={() => setStep('UPLOAD')}
-                  className="px-4 py-2 text-sm font-medium text-[var(--sys-primitive-color-collection-1-color-palettes-neutral-neutral40)] hover:text-[var(--sys-primitive-color-collection-1-color-palettes-neutral-neutral10)]"
+                  className="px-4 py-2 text-[var(--sys-primitive-color-collection-1-color-palettes-neutral-neutral40)] hover:text-[var(--sys-primitive-color-collection-1-color-palettes-neutral-neutral10)] label-large"
                 >
                   Back
                 </button>
                 <button 
                   onClick={executeImport}
                   disabled={!mapping.phone_number}
-                  className="rounded-md bg-[var(--sys-color-roles-1-primary-roles-primary-color-role)] px-6 py-2 text-sm font-medium text-white shadow-sm hover:bg-[var(--sys-primitive-color-collection-1-color-palettes-primary-primary60)] transition-colors disabled:opacity-50"
+                  className="rounded-md bg-[var(--sys-color-roles-1-primary-roles-primary-color-role)] px-6 py-2 text-white shadow-sm hover:bg-[var(--sys-primitive-color-collection-1-color-palettes-primary-primary60)] transition-colors disabled:opacity-50 label-large"
                 >
                   Import {data.length} Leads
                 </button>
@@ -190,7 +205,7 @@ export function CsvImporter({ onSuccess }: { onSuccess?: () => void }) {
               </p>
               <button 
                 onClick={reset}
-                className="w-full rounded-md bg-[var(--sys-color-roles-1-primary-roles-primary-color-role)] px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-[var(--sys-primitive-color-collection-1-color-palettes-primary-primary60)] transition-colors"
+                className="w-full rounded-md bg-[var(--sys-color-roles-1-primary-roles-primary-color-role)] px-4 py-2 text-white shadow-sm hover:bg-[var(--sys-primitive-color-collection-1-color-palettes-primary-primary60)] transition-colors label-large"
               >
                 Done
               </button>

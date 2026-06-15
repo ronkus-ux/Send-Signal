@@ -600,6 +600,30 @@ body {
   line-height: 1.25;
 }
 
+@utility label-medium {
+  font-family: var(--sys-typography-label-label-medium-font-family, Inter), sans-serif;
+  font-size: 0.75rem;
+  font-weight: var(--sys-typography-label-label-medium-font-weight, 500);
+  letter-spacing: var(--sys-typography-label-label-medium-letter-spacing, -0.5px);
+  line-height: 1rem;
+}
+
+@utility headline-small {
+  font-family: var(--sys-typography-headline-headline-small-font-family, Inter), sans-serif;
+  font-size: 1.5rem;
+  font-weight: var(--sys-typography-headline-headline-small-font-weight, 500);
+  letter-spacing: var(--sys-typography-headline-headline-small-letter-spacing, -1px);
+  line-height: 2rem;
+}
+
+@utility headline-medium {
+  font-family: var(--sys-typography-headline-headline-medium-font-family, Inter), sans-serif;
+  font-size: 1.75rem;
+  font-weight: var(--sys-typography-headline-headline-medium-font-weight, 600);
+  letter-spacing: var(--sys-typography-headline-headline-medium-letter-spacing, -1.2px);
+  line-height: 2.25rem;
+}
+
 label.font-medium {
   color: #000000 !important;
   font-weight: 500 !important;

@@ -17,7 +17,7 @@ export default function DashboardLoading() {
         {[1, 2, 3, 4].map((i) => (
           <div
             key={i}
-            className="bg-white p-6 rounded-xl border border-[var(--sys-primitive-color-collection-1-color-palettes-neutral-neutral90)] shadow-sm space-y-3"
+            className="bg-white p-6 rounded-xl border border-[var(--sys-primitive-color-collection-1-color-palettes-neutral-neutral90)] space-y-3"
           >
             <div className="h-4 w-24 bg-[var(--sys-primitive-color-collection-1-color-palettes-neutral-neutral95)] rounded-md"></div>
             <div className="h-8 w-16 bg-[var(--sys-primitive-color-collection-1-color-palettes-neutral-neutral90)] rounded-md"></div>
@@ -26,7 +26,7 @@ export default function DashboardLoading() {
       </div>
 
       {/* Large Content Card skeleton */}
-      <div className="bg-white rounded-xl border border-[var(--sys-primitive-color-collection-1-color-palettes-neutral-neutral90)] overflow-hidden shadow-sm">
+      <div className="bg-white rounded-xl border border-[var(--sys-primitive-color-collection-1-color-palettes-neutral-neutral90)] overflow-hidden">
         <div className="p-6 border-b border-[var(--sys-primitive-color-collection-1-color-palettes-neutral-neutral90)]">
           <div className="h-5 w-36 bg-[var(--sys-primitive-color-collection-1-color-palettes-neutral-neutral90)] rounded-md"></div>
         </div>
