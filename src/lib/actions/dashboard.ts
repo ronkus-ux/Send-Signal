@@ -23,7 +23,49 @@ export async function fetchOverviewData() {
     }),
   ]);
 
-  return { totalCampaigns, totalLeads, savedTemplates };
+  let recentActivities = await prisma.activityLog.findMany({
+    where: { user_id: userId },
+    orderBy: { created_at: 'desc' },
+    take: 5,
+    include: {
+      campaign: { select: { name: true } },
+      lead: { select: { first_name: true, last_name: true, phone_number: true } },
+    }
+  });
+
+  // Automatically backfill activity logs for existing leads if they are empty
+  if (recentActivities.length === 0 && totalLeads > 0) {
+    const leads = await prisma.lead.findMany({
+      where: { user_id: userId, deleted_at: null },
+      orderBy: { created_at: 'desc' },
+      take: 10,
+    });
+
+    if (leads.length > 0) {
+      await prisma.activityLog.createMany({
+        data: leads.map(lead => ({
+          user_id: userId,
+          lead_id: lead.id,
+          event_type: 'LEAD_IMPORTED',
+          description: `Lead added: ${[lead.first_name, lead.last_name].filter(Boolean).join(' ') || lead.phone_number}`,
+          created_at: lead.created_at,
+        }))
+      });
+
+      // Refetch after backfilling
+      recentActivities = await prisma.activityLog.findMany({
+        where: { user_id: userId },
+        orderBy: { created_at: 'desc' },
+        take: 5,
+        include: {
+          campaign: { select: { name: true } },
+          lead: { select: { first_name: true, last_name: true, phone_number: true } },
+        }
+      });
+    }
+  }
+
+  return { totalCampaigns, totalLeads, savedTemplates, recentActivities };
 }
 
 export async function fetchLeadsData() {
@@ -178,4 +220,22 @@ export async function updateProfileSettings(formData: { company_name: string; em
     console.error('Failed to update profile settings:', err);
     return { success: false, error: err.message || 'Failed to update profile settings' };
   }
+}
+
+export async function fetchFullActivityLog() {
+  const session = await getSession();
+  if (!session?.user) throw new Error('Unauthorized');
+  const userId = session.user.id;
+
+  const logs = await prisma.activityLog.findMany({
+    where: { user_id: userId },
+    orderBy: { created_at: 'desc' },
+    take: 100,
+    include: {
+      campaign: { select: { name: true } },
+      lead: { select: { first_name: true, last_name: true, phone_number: true } },
+    }
+  });
+
+  return logs;
 }

@@ -31,7 +31,7 @@ export async function addLead(
   const data = validatedFields.data;
 
   try {
-    await prisma.lead.upsert({
+    const lead = await prisma.lead.upsert({
       where: {
         user_id_phone_number: {
           user_id: session.user.id,
@@ -52,6 +52,15 @@ export async function addLead(
         email: data.email,
         opt_in: data.opt_in,
         status: 'NEW',
+      }
+    });
+
+    await prisma.activityLog.create({
+      data: {
+        user_id: session.user.id,
+        lead_id: lead.id,
+        event_type: 'LEAD_IMPORTED',
+        description: `Lead added: ${[data.first_name, data.last_name].filter(Boolean).join(' ') || data.phone_number}`,
       }
     });
 
@@ -97,6 +106,14 @@ export async function importLeads(leads: Record<string, unknown>[]) {
     await prisma.lead.createMany({
       data: validLeads,
       skipDuplicates: true,
+    });
+
+    await prisma.activityLog.create({
+      data: {
+        user_id: session.user.id,
+        event_type: 'LEAD_IMPORTED',
+        description: `Imported ${validLeads.length} lead${validLeads.length > 1 ? 's' : ''} via CSV`,
+      }
     });
     
     revalidatePath('/dashboard');
