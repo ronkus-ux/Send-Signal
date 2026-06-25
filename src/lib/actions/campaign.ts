@@ -69,7 +69,7 @@ export async function createCampaign(
 
     // Idempotent: skipDuplicates prevents re-queuing same lead
     await prisma.campaignLead.createMany({
-      data: eligibleLeads.map(lead => ({
+      data: eligibleLeads.map((lead: { id: string }) => ({
         campaign_id: campaign.id,
         lead_id: lead.id,
         status: 'QUEUED',
@@ -224,7 +224,7 @@ async function dispatchCampaignMessages(campaignId: string) {
               sending_at: new Date(),
             },
           });
-          
+
           await prisma.activityLog.create({
             data: {
               user_id: campaign.user_id,
@@ -244,7 +244,7 @@ async function dispatchCampaignMessages(campaignId: string) {
               failure_reason: result.error,
             },
           });
-          
+
           await prisma.activityLog.create({
             data: {
               user_id: campaign.user_id,
