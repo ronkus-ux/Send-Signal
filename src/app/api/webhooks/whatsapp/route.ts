@@ -25,7 +25,7 @@ export async function GET(req: NextRequest) {
     select: { id: true, webhook_verify_token_encrypted: true },
   });
 
-  const matched = accounts.some((account: { id: string; webhook_verify_token_encrypted: string }) => {
+  const matched = accounts.some(account => {
     try {
       const decrypted = decryptText(account.webhook_verify_token_encrypted);
       return decrypted === token;
@@ -220,7 +220,7 @@ async function handleStatusUpdate(status: Record<string, unknown>) {
   if (updateData.status === 'DELIVERED') eventType = 'MESSAGE_DELIVERED';
   if (updateData.status === 'READ') eventType = 'MESSAGE_READ';
   if (updateData.status === 'FAILED') eventType = 'MESSAGE_FAILED';
-
+  
   if (eventType) {
     await prisma.activityLog.create({
       data: {
