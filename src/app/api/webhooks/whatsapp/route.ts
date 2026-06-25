@@ -283,7 +283,7 @@ async function handleInboundMessage(
 
     if (unsubOutbound.length > 0) {
       await prisma.message.updateMany({
-        where: { id: { in: unsubOutbound.map(m => m.id) } },
+        where: { id: { in: unsubOutbound.map((m: { id: string }) => m.id) } },
         data: { status: 'UNSUBSCRIBED' },
       });
 
