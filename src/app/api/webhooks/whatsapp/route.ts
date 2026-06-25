@@ -320,7 +320,7 @@ async function handleInboundMessage(
 
     if (outboundMessages.length > 0) {
       await prisma.message.updateMany({
-        where: { id: { in: outboundMessages.map(m => m.id) } },
+        where: { id: { in: outboundMessages.map((m: { id: string }) => m.id) } },
         data: { status: 'REPLIED', replied_at: receivedAt },
       });
 
