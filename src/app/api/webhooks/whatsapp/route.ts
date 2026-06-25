@@ -220,7 +220,7 @@ async function handleStatusUpdate(status: Record<string, unknown>) {
   if (updateData.status === 'DELIVERED') eventType = 'MESSAGE_DELIVERED';
   if (updateData.status === 'READ') eventType = 'MESSAGE_READ';
   if (updateData.status === 'FAILED') eventType = 'MESSAGE_FAILED';
-  
+
   if (eventType) {
     await prisma.activityLog.create({
       data: {
