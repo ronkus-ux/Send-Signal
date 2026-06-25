@@ -25,7 +25,7 @@ export async function GET(req: NextRequest) {
     select: { id: true, webhook_verify_token_encrypted: true },
   });
 
-  const matched = accounts.some(account => {
+  const matched = accounts.some((account: { id: string; webhook_verify_token_encrypted: string }) => {
     try {
       const decrypted = decryptText(account.webhook_verify_token_encrypted);
       return decrypted === token;
