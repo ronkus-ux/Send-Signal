@@ -127,7 +127,7 @@ export async function startCampaign(campaignId: string) {
   });
 
   // Render and queue a Message row per lead (idempotent)
-  const messageData = campaign.campaign_leads.map(cl => {
+  campaign.campaign_leads.map((cl: any) => {
     const lead = cl.lead;
     const rendered = renderTemplate(campaign.template.body, {
       first_name: lead.first_name ?? '',
