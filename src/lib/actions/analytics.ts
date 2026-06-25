@@ -19,13 +19,13 @@ export async function getDashboardAnalytics() {
   });
 
   const totalCampaigns = campaigns.length;
-  
+
   let totalSent = 0;
   let totalDelivered = 0;
   let totalReplied = 0;
   let totalConverted = 0;
 
-  campaigns.forEach(c => {
+  campaigns.forEach((c: { total_sent: number; total_delivered: number; total_replied: number; total_converted: number }) => {
     totalSent += c.total_sent;
     totalDelivered += c.total_delivered;
     totalReplied += c.total_replied;
