@@ -9,7 +9,7 @@ The platform also provides message trackcing, reply monitoring, and campaign ana
 
 The application consists of two main surfaces:
 
-Public marketing website.
+Public marketing website
 
 Authenticated product dashboard
 
