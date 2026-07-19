@@ -12,7 +12,7 @@ export function PublicHeader() {
       <div className="mx-auto max-w-7xl">
         <div className="flex h-14 items-center justify-between relative">
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-1 group no-underline">
+          <Link href="/" className="flex items-center gap-1 group no-underline p-2 md:p-0">
             <div className="flex items-center justify-center text-brand-primary group-hover:scale-105 transition-transform">
               <Send size={20} strokeWidth={2} className="text-brand-primary transform -rotate-12" />
             </div>
