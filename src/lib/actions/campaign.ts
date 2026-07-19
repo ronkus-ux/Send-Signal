@@ -206,7 +206,7 @@ async function dispatchCampaignMessages(campaignId: string) {
     const batch = messages.slice(i, i + batchSize);
 
     await Promise.all(
-      batch.map(async msg => {
+      batch.map(async (msg: any) => {
         const result = await sendTextMessage(
           phoneNumberId,
           accessToken,
